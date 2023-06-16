@@ -7,6 +7,11 @@ type User struct {
 	Password string `json:"password"`
 }
 
+type Word struct {
+	Word      string
+	Translate string
+}
+
 type Claims struct {
 	jwt.StandardClaims
 	Username string `json:username`

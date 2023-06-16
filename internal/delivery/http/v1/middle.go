@@ -13,7 +13,6 @@ func (h *Handler) BasicAuth(hand httprouter.Handle) httprouter.Handle {
 		token, err := r.Cookie("Auth")
 		if err != nil {
 			logrus.Error(err)
-			http.Redirect(w, r, "/sing", http.StatusSeeOther)
 			return
 		}
 		_, err = auth.ParseJWT(token.Value)
@@ -22,6 +21,5 @@ func (h *Handler) BasicAuth(hand httprouter.Handle) httprouter.Handle {
 			return
 		}
 		logrus.Error(err)
-		http.Redirect(w, r, "/sing", http.StatusSeeOther)
 	}
 }

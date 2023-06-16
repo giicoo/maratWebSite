@@ -1,0 +1,28 @@
+{% extends 'templates/base.html' %}
+{% block style %}
+<link href="/templates/static/css/logreg.css" type="text/css" rel="stylesheet">
+{% endblock %}
+
+{% block main %}
+    <div class="main">
+        <div class="log">
+            <div class="name_form"><p>Login</p></div>
+            <form id='my_form' action="/singin" method="post">
+                <p><label> Login:  <input class="input_form" name="login" id="val1"></label></p>
+                <p><label> Password:  <input class="input_form" name="password" id="val2"></label></p>
+                <div class="btn_form"><p><button class="subbtn" type="button" value="Submit" id="btmSumbit"> Login </button> <button type="button" class="change">Register</button></p></div>
+            </form>
+        </div>
+        <div class="reg">
+            <div class="name_form"><p>Register</p></div>
+            <form id='register_form' action="/singup" method="post">
+                <p><label> Login: <input class="input_form" name="login" id="rval1"></label></p>
+                <p><label> Password: <input class="input_form" name="password" id="rval3"></label></p>
+                <div class="btn_form"><p><button class="subbtn" type="button" id="rbtmSumbit"> Registration </button> <button type="button" class="change">Login</button></p></div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+<script src="/templates/static/js/logreg.js"></script>
+{% endblock %}

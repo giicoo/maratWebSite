@@ -33,7 +33,7 @@ func Run() error {
 	}
 
 	// init and start server
-	srv := server.NewServer("localhost:8888", r)
+	srv := server.NewServer("localhost:8000", r)
 
 	if err := srv.Start(); err != nil {
 		return err

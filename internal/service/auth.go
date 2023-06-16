@@ -21,6 +21,12 @@ func (s *Services) SingIn(u models.User) (string, error) {
 }
 
 func (s *Services) SingUp(u models.User) error {
-	// validate |
+	//hash password
+	hash, err := hashFunc.HashPassword(u.Password)
+	if err != nil {
+		return err
+	}
+	u.Password = hash
+
 	return s.repo.AddUser(u.Login, u.Password)
 }

@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/giicoo/maratWebSite/models"
-	hashFunc "github.com/giicoo/maratWebSite/pkg/hash_password"
 	"github.com/julienschmidt/httprouter"
 	"github.com/sirupsen/logrus"
 )
@@ -23,13 +22,6 @@ func (h *Handler) singUp(w http.ResponseWriter, r *http.Request, ps httprouter.P
 		http.Error(w, "Invalid Json", http.StatusBadRequest)
 		return
 	}
-	hash, err := hashFunc.HashPassword(userToDB.Password)
-	if err != nil {
-		logrus.Error(err)
-		http.Error(w, "Other Error", http.StatusInternalServerError)
-		return
-	}
-	userToDB.Password = hash
 
 	if err := h.services.SingUp(userToDB); err != nil {
 		logrus.Error(err)
@@ -66,5 +58,5 @@ func (h *Handler) singIn(w http.ResponseWriter, r *http.Request, ps httprouter.P
 	}
 
 	http.SetCookie(w, &ck)
-	http.Redirect(w, r, "/", http.StatusSeeOther)
+	w.Write([]byte("Successful login"))
 }
