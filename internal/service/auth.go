@@ -20,7 +20,7 @@ func (s *Services) SingIn(u models.User) (string, error) {
 	return "", errors.New("Passwords is different")
 }
 
-func (s *Services) SingUp(u models.User) error {
+func (s *Services) SingUp(u models.UserDB) error {
 	//hash password
 	hash, err := hashFunc.HashPassword(u.Password)
 	if err != nil {
@@ -28,5 +28,5 @@ func (s *Services) SingUp(u models.User) error {
 	}
 	u.Password = hash
 
-	return s.repo.AddUser(u.Login, u.Password)
+	return s.repo.AddUser(u)
 }

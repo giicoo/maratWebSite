@@ -15,7 +15,7 @@ func (h *Handler) addWord(w http.ResponseWriter, r *http.Request, ps httprouter.
 	body := r.Body
 	defer body.Close()
 
-	word := models.Word{}
+	word := models.WordDB{}
 
 	if err := json.NewDecoder(body).Decode(&word); err != nil {
 		logrus.Error(err)

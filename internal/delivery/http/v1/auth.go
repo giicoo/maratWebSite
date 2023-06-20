@@ -6,6 +6,7 @@ import (
 
 	"github.com/giicoo/maratWebSite/models"
 	"github.com/julienschmidt/httprouter"
+	"github.com/noirbizarre/gonja"
 	"github.com/sirupsen/logrus"
 )
 
@@ -15,7 +16,7 @@ func (h *Handler) singUp(w http.ResponseWriter, r *http.Request, ps httprouter.P
 	body := r.Body
 	defer body.Close()
 
-	userToDB := models.User{}
+	userToDB := models.UserDB{}
 
 	if err := json.NewDecoder(body).Decode(&userToDB); err != nil {
 		logrus.Error(err)
@@ -59,4 +60,18 @@ func (h *Handler) singIn(w http.ResponseWriter, r *http.Request, ps httprouter.P
 
 	http.SetCookie(w, &ck)
 	w.Write([]byte("Successful login"))
+}
+
+func (h *Handler) sing(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	logrus.Info(r.URL)
+	var tpl = gonja.Must(gonja.FromFile("templates/logreg.html"))
+
+	out, err := tpl.Execute(gonja.Context{"query": r.FormValue("query")})
+	if err != nil {
+		logrus.Error(err)
+		http.Error(w, "Server Error", http.StatusInternalServerError)
+	}
+	w.Write([]byte(out))
+
+	w.Write([]byte("Singin form"))
 }
