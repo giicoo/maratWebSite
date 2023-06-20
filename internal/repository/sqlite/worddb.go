@@ -8,7 +8,7 @@ func (s *Store) AddWord(word, translate string) error {
 	return err
 }
 
-func (s *Store) GetWords() ([]models.Word, error) {
+func (s *Store) GetWords() ([]models.WordDB, error) {
 	stmt := "SELECT word, translate FROM words"
 	rows, err := s.db.Query(stmt)
 	if err != nil {
@@ -16,10 +16,10 @@ func (s *Store) GetWords() ([]models.Word, error) {
 	}
 	defer rows.Close()
 
-	words := []models.Word{}
+	words := []models.WordDB{}
 
 	for rows.Next() {
-		word := models.Word{}
+		word := models.WordDB{}
 		if err := rows.Scan(&word.Word, &word.Translate); err != nil {
 			return nil, err
 		}

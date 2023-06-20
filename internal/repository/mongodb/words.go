@@ -38,15 +38,29 @@ func (s *Store) GetWords() ([]*models.WordDB, error) {
 }
 
 func (s *Store) GetWordsByNames(words []*models.WordDB) ([]*models.WordDB, error) {
-	// collection := s.client.Database("maratDB").Collection("words")
+	collection := s.client.Database("maratDB").Collection("words")
 
-	filter := bson.M{}
+	elm_fil := []bson.M{}
 	for _, item := range words {
-		filter["word"] = item.Word
+		elm_fil = append(elm_fil, bson.M{"word": item.Word})
 	}
-	fmt.Println(filter)
+	filter := bson.M{"$or": elm_fil}
 
 	answers := []*models.WordDB{}
+
+	cur, err := collection.Find(context.TODO(), filter)
+	if err != nil {
+		return nil, err
+	}
+
+	for cur.Next(context.TODO()) {
+		word := models.WordDB{}
+		err := cur.Decode(&word)
+		if err != nil {
+			return nil, err
+		}
+		answers = append(answers, &word)
+	}
 
 	return answers, nil
 }

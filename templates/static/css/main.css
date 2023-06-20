@@ -169,15 +169,12 @@
         background: white;
         
     }
-
-
-
-
-    
-
-
-
-
+    .result {
+        color: white;
+        height: 100%;
+        width: 100%;
+        text-align: center;
+    }
 
 
 

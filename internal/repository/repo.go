@@ -7,4 +7,5 @@ type Repo interface {
 	GetUser(login string) (models.UserDB, error)
 	AddWord(word models.WordDB) error
 	GetWords() ([]*models.WordDB, error)
+	GetWordsByNames(words []*models.WordDB) ([]*models.WordDB, error)
 }

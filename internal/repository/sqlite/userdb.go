@@ -8,10 +8,10 @@ func (s *Store) AddUser(login string, hash_password string) error {
 	return err
 }
 
-func (s *Store) GetUser(login string) (models.User, error) {
+func (s *Store) GetUser(login string) (models.UserDB, error) {
 	stmt := "SELECT login, hash_password FROM users WHERE login=@param1"
 	row := s.db.QueryRow(stmt, login)
-	user := models.User{}
+	user := models.UserDB{}
 
 	err := row.Scan(&user.Login, &user.Password)
 	return user, err

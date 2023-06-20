@@ -38,7 +38,7 @@ func (h *Handler) singIn(w http.ResponseWriter, r *http.Request, ps httprouter.P
 	body := r.Body
 	defer body.Close()
 
-	user := models.User{}
+	user := models.UserDB{}
 
 	if err := json.NewDecoder(body).Decode(&user); err != nil {
 		logrus.Error(err)

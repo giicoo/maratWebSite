@@ -8,7 +8,7 @@ import (
 	hashFunc "github.com/giicoo/maratWebSite/pkg/hash_password"
 )
 
-func (s *Services) SingIn(u models.User) (string, error) {
+func (s *Services) SingIn(u models.UserDB) (string, error) {
 	userInDB, err := s.repo.GetUser(u.Login)
 	if err != nil {
 		return "", err

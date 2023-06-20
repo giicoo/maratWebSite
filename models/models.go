@@ -4,19 +4,9 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-type User struct {
-	Login    string `json:"login"`
-	Password string `json:"password"`
-}
-
 type UserDB struct {
 	Login    string `bson:"login"`
 	Password string `bson:"password"`
-}
-
-type Word struct {
-	Word      string `json:"word"`
-	Translate string `json:"translate"`
 }
 
 type WordDB struct {
@@ -26,5 +16,11 @@ type WordDB struct {
 
 type Claims struct {
 	jwt.StandardClaims
-	Username string `json:username`
+	Username string `json:"username"`
+}
+
+type TestWord struct {
+	Word  *WordDB
+	Check bool
+	Right string
 }
