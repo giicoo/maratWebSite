@@ -21,29 +21,32 @@
         <div class="main_center">
             <div class="title_test">ТЕСТ ПО ТАТАРСКОМУ</div>
             <div class="test">
-                
+               
                 <form id="form_test" method="get">
                     <meta name="now" content="1" >
+                    
                     {% for item in words %}
+
+                    {% if item.Right == 0 %}
                     {% if item == first %}
-                    <div class="word_test visible">{{item.Word}}
+                    <div class="word_test visible">{{item.Words[0].Word}}  
                     {% else %}  
-                    <div class="word_test invisible">{{item.Word}}  
+                    <div class="word_test invisible">{{item.Words[0].Word}}
                     {% endif %}
-                      <label class="container">One
-                        <input type="radio" name="{{item.Word}}" value="1">
+                      <label class="container">{{item.Words[0].Translate}} 
+                        <input type="radio" name="{{item.Words[0].Word}}" value="{{item.Words[0].Translate}}">
                         <span class="checkmark"></span>
                       </label>
-                      <label class="container">Two
-                        <input type="radio" name="{{item.Word}}" value="2">
+                      <label class="container">{{item.Words[1].Translate}}
+                        <input type="radio" name="{{item.Words[0].Word}}" value="{{item.Words[1].Translate}}">
                         <span class="checkmark"></span>
                       </label>
-                      <label class="container">Three
-                        <input type="radio" name="{{item.Word}}" value="3">
+                      <label class="container">{{item.Words[2].Translate}}
+                        <input type="radio" name="{{item.Words[0].Word}}" value="{{item.Words[2].Translate}}">
                         <span class="checkmark"></span>
                       </label>
-                      <label class="container">Four
-                        <input type="radio" name="{{item.Word}}" value="4">
+                      <label class="container">{{item.Words[3].Translate}}
+                        <input type="radio" name="{{item.Words[0].Word}}" value="{{item.Words[3].Translate}}">
                         <span class="checkmark"></span>
                       </label>
                       {% if item == last %}
@@ -52,12 +55,113 @@
                       <button class="onward" type="button">Далее</button>
                       {% endif %}
                     </div>  
+                    {% endif %}
+
+
+
+                    {% if item.Right == 1 %}
+                    {% if item == first %}
+                    <div class="word_test visible">{{item.Words[1].Word}} 
+                    {% else %}  
+                    <div class="word_test invisible">{{item.Words[1].Word}}
+                    {% endif %}
+                      <label class="container">{{item.Words[0].Translate}}
+                        <input type="radio" name="{{item.Words[1].Word}}" value="{{item.Words[0].Translate}}">
+                        <span class="checkmark"></span>
+                      </label>
+                      <label class="container">{{item.Words[1].Translate}}
+                        <input type="radio" name="{{item.Words[1].Word}}" value="{{item.Words[1].Translate}}">
+                        <span class="checkmark"></span>
+                      </label>
+                      <label class="container">{{item.Words[2].Translate}}
+                        <input type="radio" name="{{item.Words[1].Word}}" value="{{item.Words[2].Translate}}">
+                        <span class="checkmark"></span>
+                      </label>
+                      <label class="container">{{item.Words[3].Translate}}
+                        <input type="radio" name="{{item.Words[1].Word}}" value="{{item.Words[3].Translate}}">
+                        <span class="checkmark"></span>
+                      </label>
+                      {% if item == last %}
+                      <button class="submit" type="button">Отправить</button>
+                      {% else %}
+                      <button class="onward" type="button">Далее</button>
+                      {% endif %}
+                    </div>  
+                    {% endif %}
+
+
+
+
+                    {% if item.Right == 2 %}
+                    {% if item == first %}
+                    <div class="word_test visible">{{item.Words[2].Word}} 
+                    {% else %}  
+                    <div class="word_test invisible">{{item.Words[2].Word}}
+                    {% endif %}
+                      <label class="container">{{item.Words[0].Translate}}
+                        <input type="radio" name="{{item.Words[2].Word}}" value="{{item.Words[0].Translate}}">
+                        <span class="checkmark"></span>
+                      </label>
+                      <label class="container">{{item.Words[1].Translate}}
+                        <input type="radio" name="{{item.Words[2].Word}}" value="{{item.Words[1].Translate}}">
+                        <span class="checkmark"></span>
+                      </label>
+                      <label class="container">{{item.Words[2].Translate}}
+                        <input type="radio" name="{{item.Words[2].Word}}" value="{{item.Words[2].Translate}}">
+                        <span class="checkmark"></span>
+                      </label>
+                      <label class="container">{{item.Words[3].Translate}}
+                        <input type="radio" name="{{item.Words[2].Word}}" value="{{item.Words[3].Translate}}">
+                        <span class="checkmark"></span>
+                      </label>
+                      {% if item == last %}
+                      <button class="submit" type="button">Отправить</button>
+                      {% else %}
+                      <button class="onward" type="button">Далее</button>
+                      {% endif %}
+                    </div>  
+                    {% endif %}
+
+
+
+                    {% if item.Right == 3 %}
+                    {% if item == first %}
+                    <div class="word_test visible">{{item.Words[3].Word}}
+                    {% else %}  
+                    <div class="word_test invisible">{{item.Words[3].Word}}
+                    {% endif %}
+                      <label class="container">{{item.Words[0].Translate}}
+                        <input type="radio" name="{{item.Words[3].Word}}" value="{{item.Words[0].Translate}}">
+                        <span class="checkmark"></span>
+                      </label>
+                      <label class="container">{{item.Words[1].Translate}}
+                        <input type="radio" name="{{item.Words[3].Word}}" value="{{item.Words[1].Translate}}">
+                        <span class="checkmark"></span>
+                      </label>
+                      <label class="container">{{item.Words[2].Translate}}
+                        <input type="radio" name="{{item.Words[3].Word}}" value="{{item.Words[2].Translate}}">
+                        <span class="checkmark"></span>
+                      </label>
+                      <label class="container">{{item.Words[3].Translate}}
+                        <input type="radio" name="{{item.Words[3].Word}}" value="{{item.Words[3].Translate}}">
+                        <span class="checkmark"></span>
+                      </label>
+                      {% if item == last %}
+                      <button class="submit" type="button">Отправить</button>
+                      {% else %}
+                      <button class="onward" type="button">Далее</button>
+                      {% endif %}
+                    </div>  
+                    {% endif %}
                     {% endfor %}
-                <form>
+                </form>
                 <div id="result" class="result invisible">
                     <div class="procent">2</div>
                     <div class="errors"></div>
                 </div>
+            </div>
+                    
+            
             </div>
         </div>
         <div class="main_right"></div>

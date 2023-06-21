@@ -174,9 +174,16 @@
         height: 100%;
         width: 100%;
         text-align: center;
+        background-color: #00ff11;
+        border-radius: 0.7em;
     }
-
-
+    .procent {
+        font-size: 2em;
+    }
+    .error {
+        background-color: #ff0000;
+        font-size: 2em;
+    }
 
 
     /* _____________________footer__________________ */

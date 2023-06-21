@@ -24,3 +24,8 @@ type TestWord struct {
 	Check bool
 	Right string
 }
+
+type WorkTest struct {
+	Words []*WordDB
+	Right int
+}

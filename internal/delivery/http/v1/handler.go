@@ -1,6 +1,7 @@
 package http_v1
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/giicoo/maratWebSite/internal/service"
@@ -31,6 +32,7 @@ func (h *Handler) InitHandlers() http.Handler {
 	// words
 	r.POST("/add-word", h.addWord)
 	r.POST("/get-words", h.getWords)
+	r.POST("/debug", h.bug)
 
 	//test
 	r.GET("/test", h.testIndex)
@@ -43,4 +45,17 @@ func (h *Handler) InitHandlers() http.Handler {
 func (h *Handler) index(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	logrus.Info(r.URL)
 	w.Write([]byte("Home"))
+}
+
+func (h *Handler) bug(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	logrus.Info(r.URL)
+	words, _ := h.services.GetWordsForTest()
+	jsonValue, err := json.Marshal(words)
+	if err != nil {
+		logrus.Error(err)
+		http.Error(w, "Invalid JSON", http.StatusBadRequest)
+		return
+	}
+	w.Header().Add("Content-Type", "application/json")
+	w.Write(jsonValue)
 }

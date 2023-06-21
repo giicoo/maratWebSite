@@ -48,11 +48,18 @@ $(document).ready(function(){
                     for (let i = 0; i < dt.length; i++) {
                         if (dt[i]["Check"]) {
                             x ++
+                        } else {
+                            console.log(dt[i]["Word"])
+                            var chil = document.createElement("div")
+                            chil.setAttribute("class", "error");
+                            chil.textContent = dt[i]["Word"]["Word"] + " - " + dt[i]["Right"];
+                            console.log(res.children[1], chil)
+                            res.children[1].appendChild(chil)
                         }
                       }
                     res.className = "result visible"
                     console.log(dt.length, x)
-                    res.children[0].textContent = x/(dt.length)*100
+                    res.children[0].textContent = x/(dt.length)*100 + "%"
                 },
                 error: function (err){
                     console.log(err)

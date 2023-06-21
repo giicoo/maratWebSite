@@ -2,7 +2,6 @@ package mongo_db
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/giicoo/maratWebSite/models"
 	"go.mongodb.org/mongo-driver/bson"
@@ -33,7 +32,7 @@ func (s *Store) GetWords() ([]*models.WordDB, error) {
 		}
 		words = append(words, &word)
 	}
-	fmt.Println(words[0].Word)
+
 	return words, nil
 }
 

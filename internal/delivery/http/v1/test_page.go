@@ -12,7 +12,7 @@ func (h *Handler) testIndex(w http.ResponseWriter, r *http.Request, ps httproute
 	logrus.Info(r.URL)
 	tpl := gonja.Must(gonja.FromFile("/templates/main.html"))
 
-	words, err := h.services.GetWord()
+	words, err := h.services.GetWordsForTest()
 	if err != nil {
 		logrus.Error(err)
 		http.Error(w, "Server error", http.StatusInternalServerError)
