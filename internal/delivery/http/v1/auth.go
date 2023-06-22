@@ -11,6 +11,7 @@ import (
 )
 
 func (h *Handler) singUp(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	// Add user from form
 	logrus.Info(r.URL)
 
 	body := r.Body
@@ -33,6 +34,7 @@ func (h *Handler) singUp(w http.ResponseWriter, r *http.Request, ps httprouter.P
 }
 
 func (h *Handler) singIn(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	// Check user from form and set cookie
 	logrus.Info(r.URL)
 
 	body := r.Body
@@ -63,7 +65,9 @@ func (h *Handler) singIn(w http.ResponseWriter, r *http.Request, ps httprouter.P
 }
 
 func (h *Handler) sing(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	// Page singin/singup form
 	logrus.Info(r.URL)
+
 	var tpl = gonja.Must(gonja.FromFile("templates/logreg.html"))
 
 	out, err := tpl.Execute(gonja.Context{"query": r.FormValue("query")})
@@ -72,6 +76,5 @@ func (h *Handler) sing(w http.ResponseWriter, r *http.Request, ps httprouter.Par
 		http.Error(w, "Server Error", http.StatusInternalServerError)
 	}
 	w.Write([]byte(out))
-
 	w.Write([]byte("Singin form"))
 }

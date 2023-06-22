@@ -5,13 +5,13 @@ import (
 )
 
 type UserDB struct {
-	Login    string `bson:"login"`
-	Password string `bson:"password"`
+	Login    string `json:"login"`
+	Password string `json:"password"`
 }
 
 type WordDB struct {
-	Word      string `bson:"word"`
-	Translate string `bson:"translate"`
+	Word      string `json:"word"`
+	Translate string `json:"translate"`
 }
 
 type Claims struct {
@@ -20,12 +20,12 @@ type Claims struct {
 }
 
 type TestWord struct {
-	Word  *WordDB
-	Check bool
-	Right string
+	Word  *WordDB `json:"word"`
+	Check bool    `json:"check"`
+	Right string  `json:"right"`
 }
 
 type WorkTest struct {
-	Words []*WordDB
-	Right int
+	Words []*WordDB `json:"words"`
+	Right int       `json:"right"`
 }

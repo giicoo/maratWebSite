@@ -2,6 +2,7 @@ package repository
 
 import "github.com/giicoo/maratWebSite/models"
 
+//go:generate $GOPATH/bin/mockgen -source=repo.go -destination=mocks/mock.go
 type Repo interface {
 	AddUser(user models.UserDB) error
 	GetUser(login string) (models.UserDB, error)
