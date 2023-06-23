@@ -2,6 +2,7 @@ package http_v1
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/giicoo/maratWebSite/models"
@@ -25,12 +26,14 @@ func (h *Handler) singUp(w http.ResponseWriter, r *http.Request, ps httprouter.P
 		return
 	}
 
-	if err := h.services.SingUp(userToDB); err != nil {
+	user, err := h.services.AuthServices.SingUp(userToDB)
+	if err != nil {
 		logrus.Error(err)
 		http.Error(w, "Database error", http.StatusInternalServerError)
 		return
 	}
-	w.Write([]byte("Successful Add"))
+	str := fmt.Sprint("Successful Add ", user.Login)
+	w.Write([]byte(str))
 }
 
 func (h *Handler) singIn(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
@@ -48,7 +51,7 @@ func (h *Handler) singIn(w http.ResponseWriter, r *http.Request, ps httprouter.P
 		return
 	}
 
-	token, err := h.services.SingIn(user)
+	token, err := h.services.AuthServices.SingIn(user)
 	if err != nil {
 		logrus.Error(err)
 		http.Error(w, "Invalid Form", http.StatusInternalServerError)

@@ -23,7 +23,7 @@ func (h *Handler) addWord(w http.ResponseWriter, r *http.Request, ps httprouter.
 		return
 	}
 
-	if err := h.services.AddWord(word); err != nil {
+	if err := h.services.WordsServices.AddWord(word); err != nil {
 		logrus.Error(err)
 		http.Error(w, "Service Error", http.StatusInternalServerError)
 		return
@@ -35,7 +35,7 @@ func (h *Handler) addWord(w http.ResponseWriter, r *http.Request, ps httprouter.
 func (h *Handler) getWords(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	logrus.Info(r.URL)
 
-	words, err := h.services.GetWord()
+	words, err := h.services.WordsServices.GetWord()
 	if err != nil {
 		logrus.Error(err)
 		http.Error(w, "Service Error", http.StatusInternalServerError)

@@ -16,7 +16,7 @@ func (h *Handler) testIndex(w http.ResponseWriter, r *http.Request, ps httproute
 
 	tpl := gonja.Must(gonja.FromFile("/templates/main.html"))
 
-	words, err := h.services.GetWordsForTest()
+	words, err := h.services.WordsServices.GetWordsForTest()
 	if err != nil {
 		logrus.Error(err)
 		http.Error(w, "Server error", http.StatusInternalServerError)
@@ -45,7 +45,7 @@ func (h *Handler) checkTest(w http.ResponseWriter, r *http.Request, ps httproute
 		http.Error(w, "Invalid JSON", http.StatusBadRequest)
 		return
 	}
-	answers, err := h.services.CheckTest(words)
+	answers, err := h.services.WordsServices.CheckTest(words)
 	if err != nil {
 		logrus.Error("SERVICE", err)
 		http.Error(w, "Service Error", http.StatusInternalServerError)
@@ -68,7 +68,7 @@ func (h *Handler) getWordsForTest(w http.ResponseWriter, r *http.Request, ps htt
 	body := r.Body
 	defer body.Close()
 
-	words, err := h.services.GetWordsForTest()
+	words, err := h.services.WordsServices.GetWordsForTest()
 	if err != nil {
 		logrus.Error(err)
 		http.Error(w, "Server error", http.StatusInternalServerError)

@@ -4,19 +4,31 @@ import (
 	"math/rand"
 	"time"
 
+	"github.com/giicoo/maratWebSite/internal/repository"
 	tools_service "github.com/giicoo/maratWebSite/internal/service/tools"
 	"github.com/giicoo/maratWebSite/models"
 )
 
-func (s *Services) AddWord(w models.WordDB) error {
+type WordsServices interface {
+	AddWord(w models.WordDB) error
+	GetWord() ([]*models.WordDB, error)
+	GetWordsForTest() ([]*models.WorkTest, error)
+	CheckTest(words []*models.WordDB) ([]*models.TestWord, error)
+}
+
+type WordsService struct {
+	repo repository.Repo
+}
+
+func (s *WordsService) AddWord(w models.WordDB) error {
 	return s.repo.AddWord(w)
 }
 
-func (s *Services) GetWord() ([]*models.WordDB, error) {
+func (s *WordsService) GetWord() ([]*models.WordDB, error) {
 	return s.repo.GetWords()
 }
 
-func (s *Services) GetWordsForTest() ([]*models.WorkTest, error) {
+func (s *WordsService) GetWordsForTest() ([]*models.WorkTest, error) {
 	tests := []*models.WorkTest{}
 
 	words, err := s.repo.GetWords()
@@ -38,7 +50,7 @@ func (s *Services) GetWordsForTest() ([]*models.WorkTest, error) {
 	return tests, nil
 }
 
-func (s *Services) CheckTest(words []*models.WordDB) ([]*models.TestWord, error) {
+func (s *WordsService) CheckTest(words []*models.WordDB) ([]*models.TestWord, error) {
 	answers, err := s.repo.GetWordsByNames(words)
 	if err != nil {
 		return nil, err

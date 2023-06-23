@@ -2,14 +2,17 @@ package service
 
 import (
 	"github.com/giicoo/maratWebSite/internal/repository"
+	hashFunc "github.com/giicoo/maratWebSite/pkg/hash_password"
 )
 
 type Services struct {
-	repo repository.Repo
+	AuthServices  AuthServices
+	WordsServices WordsServices
 }
 
-func NewServices(repo repository.Repo) *Services {
+func NewServices(repo repository.Repo, hash hashFunc.HashTools) *Services {
 	return &Services{
-		repo: repo,
+		AuthServices:  &AuthService{repo: repo, hashTools: hash},
+		WordsServices: &WordsService{repo: repo},
 	}
 }
