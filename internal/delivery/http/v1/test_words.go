@@ -2,6 +2,7 @@ package http_v1
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/giicoo/maratWebSite/models"
@@ -16,7 +17,7 @@ func (h *Handler) testIndex(w http.ResponseWriter, r *http.Request, ps httproute
 
 	tpl := gonja.Must(gonja.FromFile("/templates/main.html"))
 
-	words, err := h.services.WordsServices.GetWordsForTest()
+	words, err := h.services.TestServices.GetWordsForTest(ps.ByName("name"))
 	if err != nil {
 		logrus.Error(err)
 		http.Error(w, "Server error", http.StatusInternalServerError)
@@ -28,7 +29,6 @@ func (h *Handler) testIndex(w http.ResponseWriter, r *http.Request, ps httproute
 		http.Error(w, "Server Error", http.StatusInternalServerError)
 	}
 	w.Write([]byte(out))
-	w.Write([]byte("Test Page"))
 }
 
 func (h *Handler) checkTest(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
@@ -45,7 +45,7 @@ func (h *Handler) checkTest(w http.ResponseWriter, r *http.Request, ps httproute
 		http.Error(w, "Invalid JSON", http.StatusBadRequest)
 		return
 	}
-	answers, err := h.services.WordsServices.CheckTest(words)
+	answers, err := h.services.TestServices.CheckTest(words)
 	if err != nil {
 		logrus.Error("SERVICE", err)
 		http.Error(w, "Service Error", http.StatusInternalServerError)
@@ -68,7 +68,7 @@ func (h *Handler) getWordsForTest(w http.ResponseWriter, r *http.Request, ps htt
 	body := r.Body
 	defer body.Close()
 
-	words, err := h.services.WordsServices.GetWordsForTest()
+	words, err := h.services.TestServices.GetWordsForTest(ps.ByName("name"))
 	if err != nil {
 		logrus.Error(err)
 		http.Error(w, "Server error", http.StatusInternalServerError)
@@ -82,4 +82,29 @@ func (h *Handler) getWordsForTest(w http.ResponseWriter, r *http.Request, ps htt
 	}
 	w.Header().Add("Content-Type", "application/json")
 	w.Write(jsonValue)
+}
+
+func (h *Handler) addTest(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	logrus.Info(r.URL)
+
+	body := r.Body
+	defer body.Close()
+
+	test := models.Test{}
+
+	err := json.NewDecoder(body).Decode(&test)
+	if err != nil {
+		logrus.Error("JSON", err)
+		http.Error(w, "Invalid JSON", http.StatusBadRequest)
+		return
+	}
+
+	err = h.services.TestServices.AddTest(test)
+	if err != nil {
+		logrus.Error("SERVICE", err)
+		http.Error(w, "Service error", http.StatusInternalServerError)
+	}
+	str := fmt.Sprint("Successful Add ", test.Name)
+	w.Write([]byte(str))
+
 }

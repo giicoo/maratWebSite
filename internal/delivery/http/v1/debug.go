@@ -10,7 +10,7 @@ import (
 
 func (h *Handler) bug(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	logrus.Info(r.URL)
-	words, _ := h.services.WordsServices.GetWordsForTest()
+	words, _ := h.services.TestServices.GetWordsForTest(ps.ByName("name"))
 	jsonValue, err := json.Marshal(words)
 	if err != nil {
 		logrus.Error(err)

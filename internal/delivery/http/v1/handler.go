@@ -35,9 +35,10 @@ func (h *Handler) InitHandlers() http.Handler {
 	r.POST("/debug", h.bug)
 
 	//test
-	r.GET("/test", h.testIndex)
+	r.GET("/test/:name", h.testIndex)
 	r.POST("/check-test", h.checkTest)
-	r.POST("/get-words-for-test", h.getWordsForTest)
+	r.POST("/get-words-for-test/:name", h.getWordsForTest)
+	r.POST("/add-test", h.addTest)
 
 	r.ServeFiles("/templates/*filepath", http.Dir("templates"))
 	return r

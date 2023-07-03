@@ -29,3 +29,14 @@ type WorkTest struct {
 	Words []*WordDB `json:"words"`
 	Right int       `json:"right"`
 }
+
+type Test struct {
+	Name         string        `json:"name`
+	Words        []*WordDB     `json:"words"`
+	UsersResults []*UserResult `json:"users_results"`
+}
+
+type UserResult struct {
+	Login string      `json:"login"`
+	Res   []*TestWord `json:"res"`
+}

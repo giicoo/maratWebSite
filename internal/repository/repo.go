@@ -9,4 +9,6 @@ type Repo interface {
 	AddWord(word models.WordDB) error
 	GetWords() ([]*models.WordDB, error)
 	GetWordsByNames(words []*models.WordDB) ([]*models.WordDB, error)
+	AddTest(test models.Test) error
+	GetTestByName(name string) (models.Test, error)
 }

@@ -1,4 +1,4 @@
-package tools_service
+package tools
 
 import (
 	"math/rand"
@@ -7,7 +7,14 @@ import (
 	"github.com/giicoo/maratWebSite/models"
 )
 
-func RandomWords(w []*models.WordDB, i_root int) []*models.WordDB {
+func RandomWords(w []*models.WordDB, root_item *models.WordDB) []*models.WordDB {
+	var i_root int
+	for i, item := range w {
+		if item.Word == root_item.Word {
+			i_root = i
+			break
+		}
+	}
 	words := make([]*models.WordDB, len(w))
 	copy(words, w)
 

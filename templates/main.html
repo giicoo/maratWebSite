@@ -4,6 +4,7 @@
 {% endblock %}
 
 {% block main %}
+<div class="wrapper">
     <header>
         <div class="as">
             <a class="header_a">ГЛАВНАЯ</a>
@@ -20,13 +21,13 @@
         <div class="main_left"></div>
         <div class="main_center">
             <div class="title_test">ТЕСТ ПО ТАТАРСКОМУ</div>
-            <div class="test">
+            <div class="test" id="test">
                
                 <form id="form_test" method="get">
                     <meta name="now" content="1" >
                     
                     {% for item in words %}
-
+                 
                     {% if item.Right == 0 %}
                     {% if item == first %}
                     <div class="word_test visible">{{item.Words[0].Word}}  
@@ -49,6 +50,7 @@
                         <input type="radio" name="{{item.Words[0].Word}}" value="{{item.Words[3].Translate}}">
                         <span class="checkmark"></span>
                       </label>
+                      <input type="radio" name="{{item.Words[0].Word}}" style="display: none" checked=true value="">
                       {% if item == last %}
                       <button class="submit" type="button">Отправить</button>
                       {% else %}
@@ -81,6 +83,7 @@
                         <input type="radio" name="{{item.Words[1].Word}}" value="{{item.Words[3].Translate}}">
                         <span class="checkmark"></span>
                       </label>
+                      <input type="radio" name="{{item.Words[1].Word}}" style="display: none" checked=true value="">
                       {% if item == last %}
                       <button class="submit" type="button">Отправить</button>
                       {% else %}
@@ -114,6 +117,7 @@
                         <input type="radio" name="{{item.Words[2].Word}}" value="{{item.Words[3].Translate}}">
                         <span class="checkmark"></span>
                       </label>
+                      <input type="radio" name="{{item.Words[2].Word}}" style="display: none" checked=true value="">
                       {% if item == last %}
                       <button class="submit" type="button">Отправить</button>
                       {% else %}
@@ -146,6 +150,7 @@
                         <input type="radio" name="{{item.Words[3].Word}}" value="{{item.Words[3].Translate}}">
                         <span class="checkmark"></span>
                       </label>
+                      <input type="radio" name="{{item.Words[3].Word}}" style="display: none" checked=true value="">
                       {% if item == last %}
                       <button class="submit" type="button">Отправить</button>
                       {% else %}
@@ -155,13 +160,11 @@
                     {% endif %}
                     {% endfor %}
                 </form>
+                <div class="procent" id="procent"></div>
                 <div id="result" class="result invisible">
-                    <div class="procent">2</div>
+                    
                     <div class="errors"></div>
                 </div>
-            </div>
-                    
-            
             </div>
         </div>
         <div class="main_right"></div>
@@ -176,7 +179,7 @@
             <a href="https://t.me/marat1k">TG</a>
         </div>
     </footer>
-
+</div>
 {% endblock %}
 {% block scripts %}
 <script src="/templates/static/js/main.js"></script>

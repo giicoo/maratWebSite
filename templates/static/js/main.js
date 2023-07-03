@@ -27,6 +27,7 @@ $(document).ready(function(){
         
         var data = []
         for (const element of dataForm) {
+            console.log(element)
             var el = new Map()
             el.set("word", element.name)
             el.set("translate", element.value)
@@ -43,23 +44,28 @@ $(document).ready(function(){
                 data: formData,
                 success: function(dt){
                     var res = document.getElementById("result")
-                    console.log(dt, res)
                     var x = 0
                     for (let i = 0; i < dt.length; i++) {
-                        if (dt[i]["Check"]) {
+                        if (dt[i]["check"]) {
+                            var chil = document.createElement("div")
+                            chil.setAttribute("class", "right");
+                            chil.textContent = dt[i]["word"]["word"] + " - " + dt[i]["right"]
+                            res.children[0].appendChild(chil)
                             x ++
                         } else {
-                            console.log(dt[i]["Word"])
+                           
                             var chil = document.createElement("div")
                             chil.setAttribute("class", "error");
-                            chil.textContent = dt[i]["Word"]["Word"] + " - " + dt[i]["Right"];
-                            console.log(res.children[1], chil)
-                            res.children[1].appendChild(chil)
+                            chil.textContent = dt[i]["word"]["word"] + " - " + dt[i]["right"]
+                            res.children[0].appendChild(chil)
                         }
                       }
                     res.className = "result visible"
-                    console.log(dt.length, x)
-                    res.children[0].textContent = x/(dt.length)*100 + "%"
+                    proc = document.getElementById("procent")
+                    proc.textContent = x/(dt.length)*100 + "%"
+
+                    test = document.getElementById("test")
+                    test.className = "test testres"
                 },
                 error: function (err){
                     console.log(err)
