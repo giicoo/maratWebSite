@@ -36,10 +36,10 @@ $(document).ready(function(){
     
 
         var formData = JSON.stringify(data)
-        
+        var test_name = $('meta[name=test_name]').attr('content');
         $.ajax(
             {
-                url: '/check-test',
+                url: '/check-test/'+test_name,
                 method: 'post',
                 data: formData,
                 success: function(dt){

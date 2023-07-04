@@ -23,7 +23,7 @@ func (h *Handler) testIndex(w http.ResponseWriter, r *http.Request, ps httproute
 		http.Error(w, "Server error", http.StatusInternalServerError)
 	}
 
-	out, err := tpl.Execute(gonja.Context{"words": words, "first": words[0], "last": words[len(words)-1]})
+	out, err := tpl.Execute(gonja.Context{"words": words, "first": words[0], "last": words[len(words)-1], "test_name": ps.ByName("name")})
 	if err != nil {
 		logrus.Error(err)
 		http.Error(w, "Server Error", http.StatusInternalServerError)
@@ -45,7 +45,7 @@ func (h *Handler) checkTest(w http.ResponseWriter, r *http.Request, ps httproute
 		http.Error(w, "Invalid JSON", http.StatusBadRequest)
 		return
 	}
-	answers, err := h.services.TestServices.CheckTest(words)
+	answers, err := h.services.TestServices.CheckTest(words, ps.ByName("test_name"), r.URL.User.Username())
 	if err != nil {
 		logrus.Error("SERVICE", err)
 		http.Error(w, "Service Error", http.StatusInternalServerError)
@@ -90,7 +90,7 @@ func (h *Handler) addTest(w http.ResponseWriter, r *http.Request, ps httprouter.
 	body := r.Body
 	defer body.Close()
 
-	test := models.Test{}
+	test := models.Test{UsersResults: []*models.UserResult{}}
 
 	err := json.NewDecoder(body).Decode(&test)
 	if err != nil {

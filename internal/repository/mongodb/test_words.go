@@ -24,3 +24,11 @@ func (s *Store) GetTestByName(name string) (models.Test, error) {
 	}
 	return test, nil
 }
+
+func (s *Store) AddUserRes(res models.UserResult, test_name string) error {
+	collection := s.client.Database("maratDB").Collection("tests")
+	filter := bson.M{"name": test_name}
+
+	_, err := collection.UpdateMany(context.TODO(), filter, bson.D{{"$push", bson.D{{"usersresults", res}}}})
+	return err
+}

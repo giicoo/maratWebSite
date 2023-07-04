@@ -13,7 +13,7 @@ type TestServices interface {
 	GetTestByName(name string) (models.Test, error)
 	AddTest(words models.Test) error
 	GetWordsForTest(name string) ([]*models.WorkTest, error)
-	CheckTest(words []*models.WordDB) ([]*models.TestWord, error)
+	CheckTest(words []*models.WordDB, test_name, username string) ([]*models.TestWord, error)
 }
 
 type TestService struct {
@@ -47,7 +47,7 @@ func (s *TestService) GetWordsForTest(name string) ([]*models.WorkTest, error) {
 	return tests, nil
 }
 
-func (s *TestService) CheckTest(words []*models.WordDB) ([]*models.TestWord, error) {
+func (s *TestService) CheckTest(words []*models.WordDB, test_name, username string) ([]*models.TestWord, error) {
 	answers, err := s.repo.GetWordsByNames(words)
 	if err != nil {
 		return nil, err
@@ -67,7 +67,10 @@ func (s *TestService) CheckTest(words []*models.WordDB) ([]*models.TestWord, err
 		}
 		test_answers = append(test_answers, &test_elm)
 	}
-
+	res := models.UserResult{Login: username, Res: test_answers}
+	if err = s.repo.AddUserRes(res, test_name); err != nil {
+		return nil, err
+	}
 	return test_answers, nil
 }
 

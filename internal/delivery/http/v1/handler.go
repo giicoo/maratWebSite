@@ -36,7 +36,7 @@ func (h *Handler) InitHandlers() http.Handler {
 
 	//test
 	r.GET("/test/:name", h.testIndex)
-	r.POST("/check-test", h.checkTest)
+	r.POST("/check-test/:test_name", h.BasicAuth(h.checkTest))
 	r.POST("/get-words-for-test/:name", h.getWordsForTest)
 	r.POST("/add-test", h.addTest)
 

@@ -2,6 +2,7 @@ package http_v1
 
 import (
 	"net/http"
+	"net/url"
 
 	"github.com/giicoo/maratWebSite/internal/service/auth"
 	"github.com/julienschmidt/httprouter"
@@ -18,9 +19,9 @@ func (h *Handler) BasicAuth(hand httprouter.Handle) httprouter.Handle {
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
 			return
 		}
-		_, err = auth.ParseJWT(token.Value)
+		user, err := auth.ParseJWT(token.Value)
 		if err == nil {
-
+			r.URL.User = url.User(user)
 			hand(w, r, ps)
 			return
 		}
