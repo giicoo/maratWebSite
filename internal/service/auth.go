@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"time"
 
 	"github.com/giicoo/maratWebSite/internal/repository"
 	"github.com/giicoo/maratWebSite/internal/service/auth"
@@ -37,6 +38,8 @@ func (s *AuthService) SingUp(u models.UserDB) (models.UserDB, error) {
 		return models.UserDB{}, err
 	}
 	u.Password = hash
+
+	u.Datatime = time.Now().Format(time.ANSIC)
 
 	return u, s.repo.AddUser(u)
 }

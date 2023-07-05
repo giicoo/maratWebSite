@@ -1,6 +1,8 @@
 package service
 
 import (
+	"time"
+
 	"github.com/giicoo/maratWebSite/internal/repository"
 	"github.com/giicoo/maratWebSite/models"
 )
@@ -15,6 +17,7 @@ type WordsService struct {
 }
 
 func (s *WordsService) AddWord(w models.WordDB) error {
+	w.Datatime = time.Now().Format(time.ANSIC)
 	return s.repo.AddWord(w)
 }
 

@@ -59,8 +59,9 @@ func (h *Handler) singIn(w http.ResponseWriter, r *http.Request, ps httprouter.P
 	}
 
 	ck := http.Cookie{
-		Name:  "Auth",
-		Value: token,
+		Name:   "Auth",
+		Value:  token,
+		MaxAge: 3600,
 	}
 
 	http.SetCookie(w, &ck)
@@ -79,5 +80,4 @@ func (h *Handler) sing(w http.ResponseWriter, r *http.Request, ps httprouter.Par
 		http.Error(w, "Server Error", http.StatusInternalServerError)
 	}
 	w.Write([]byte(out))
-	w.Write([]byte("Singin form"))
 }

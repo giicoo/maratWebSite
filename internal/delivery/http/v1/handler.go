@@ -1,7 +1,6 @@
 package http_v1
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/giicoo/maratWebSite/internal/service"
@@ -46,6 +45,5 @@ func (h *Handler) InitHandlers() http.Handler {
 
 func (h *Handler) index(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	logrus.Info(r.URL)
-	fmt.Println(r.URL.User.Username())
 	w.Write([]byte("Home"))
 }

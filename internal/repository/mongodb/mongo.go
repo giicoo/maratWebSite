@@ -2,7 +2,6 @@ package mongo_db
 
 import (
 	"context"
-	"fmt"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -25,7 +24,6 @@ func (s *Store) InitDB() error {
 
 	err = client.Ping(context.TODO(), nil)
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
 

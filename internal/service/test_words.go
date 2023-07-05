@@ -2,7 +2,9 @@ package service
 
 import (
 	"crypto/rand"
+	"math"
 	"math/big"
+	"time"
 
 	"github.com/giicoo/maratWebSite/internal/repository"
 	"github.com/giicoo/maratWebSite/internal/service/tools"
@@ -59,15 +61,23 @@ func (s *TestService) CheckTest(words []*models.WordDB, test_name, username stri
 
 	test_answers := []*models.TestWord{}
 
+	percent_i := 0
 	for _, item := range words {
 		test_elm := models.TestWord{
 			Word:  item,
 			Check: item.Translate == answersMap[item.Word],
 			Right: answersMap[item.Word],
 		}
+		if test_elm.Check {
+			percent_i++
+		}
 		test_answers = append(test_answers, &test_elm)
 	}
-	res := models.UserResult{Login: username, Res: test_answers}
+
+	percent := math.Round((float64(percent_i) * 100 / float64(len(test_answers))))
+	time_res := time.Now().Format(time.ANSIC)
+
+	res := models.UserResult{Login: username, Percent: int(percent), Res: test_answers, Datatime: time_res}
 	if err = s.repo.AddUserRes(res, test_name); err != nil {
 		return nil, err
 	}
@@ -75,6 +85,7 @@ func (s *TestService) CheckTest(words []*models.WordDB, test_name, username stri
 }
 
 func (s *TestService) AddTest(test models.Test) error {
+	test.Datatime = time.Now().Format(time.ANSIC)
 	return s.repo.AddTest(test)
 }
 

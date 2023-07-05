@@ -62,7 +62,7 @@ $(document).ready(function(){
                       }
                     res.className = "result visible"
                     proc = document.getElementById("procent")
-                    proc.textContent = x/(dt.length)*100 + "%"
+                    proc.textContent = Math.round(x/(dt.length)*100) + "%"
 
                     test = document.getElementById("test")
                     test.className = "test testres"

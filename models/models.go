@@ -7,11 +7,13 @@ import (
 type UserDB struct {
 	Login    string `json:"login"`
 	Password string `json:"password"`
+	Datatime string `json:"datatime"`
 }
 
 type WordDB struct {
 	Word      string `json:"word"`
 	Translate string `json:"translate"`
+	Datatime  string `json:"datatime"`
 }
 
 type Claims struct {
@@ -34,9 +36,12 @@ type Test struct {
 	Name         string        `json:"name`
 	Words        []*WordDB     `json:"words"`
 	UsersResults []*UserResult `json:"users_results"`
+	Datatime     string        `json:"datatime"`
 }
 
 type UserResult struct {
-	Login string      `json:"login"`
-	Res   []*TestWord `json:"res"`
+	Login    string      `json:"login"`
+	Percent  int         `json:"percent"`
+	Res      []*TestWord `json:"res"`
+	Datatime string      `json:"datatime"`
 }
