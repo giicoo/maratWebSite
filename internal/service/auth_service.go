@@ -10,20 +10,22 @@ import (
 	hashFunc "github.com/giicoo/maratWebSite/pkg/hash_password"
 )
 
-type AuthServices interface {
-	SingIn(u models.UserDB) (string, error)
-	SingUp(u models.UserDB) (models.UserDB, error)
+type AuthFuncs interface {
+	SingIn(u models.User) (string, error)
+	SingUp(u models.User) (models.User, error)
 }
 type AuthService struct {
 	repo      repository.Repo
 	hashTools hashFunc.HashTools
 }
 
-func (s *AuthService) SingIn(u models.UserDB) (string, error) {
-	userInDB, err := s.repo.GetUser(u.Login)
+func (s *AuthService) SingIn(u models.User) (string, error) {
+	// get user by login
+	userInDB, err := s.repo.GetUserByLogin(u.Login)
 	if err != nil {
 		return "", err
 	}
+	// check password
 	status := s.hashTools.CheckPasswordHash(u.Password, userInDB.Password)
 	if status {
 		return auth.NewJWT(u.Login)
@@ -31,15 +33,17 @@ func (s *AuthService) SingIn(u models.UserDB) (string, error) {
 	return "", errors.New("Passwords is different")
 }
 
-func (s *AuthService) SingUp(u models.UserDB) (models.UserDB, error) {
+func (s *AuthService) SingUp(u models.User) (models.User, error) {
 	//hash password
 	hash, err := s.hashTools.HashPassword(u.Password)
 	if err != nil {
-		return models.UserDB{}, err
+		return models.User{}, err
 	}
 	u.Password = hash
 
+	// set data time
 	u.Datatime = time.Now().Format(time.ANSIC)
 
+	// add user
 	return u, s.repo.AddUser(u)
 }

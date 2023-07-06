@@ -11,37 +11,42 @@ import (
 	"github.com/giicoo/maratWebSite/models"
 )
 
-type TestServices interface {
+type TestFuncs interface {
 	GetTestByName(name string) (models.Test, error)
 	AddTest(words models.Test) error
-	GetWordsForTest(name string) ([]*models.WorkTest, error)
-	CheckTest(words []*models.WordDB, test_name, username string) ([]*models.TestWord, error)
+	GetWordsForTest(name string) ([]*models.ElemTest, error)
+	CheckTest(words []*models.Word, test_name, username string) ([]*models.CheckTestWord, error)
 }
 
 type TestService struct {
 	repo repository.Repo
 }
 
-func (s *TestService) GetWordsForTest(name string) ([]*models.WorkTest, error) {
-	tests := []*models.WorkTest{}
+func (s *TestService) GetWordsForTest(name string) ([]*models.ElemTest, error) {
+	// get all words -> get words for this test -> randomly mix -> return need test
 
+	// get all words
 	words, err := s.repo.GetWords()
 	if err != nil {
-		return tests, err
+		return nil, err
 	}
 
+	// get words for this test
 	testwords, err := s.repo.GetTestByName(name)
 	if err != nil {
-		return tests, err
+		return nil, err
 	}
 
-	for _, item := range testwords.Words {
-		test := models.WorkTest{}
-		test.Words = make([]*models.WordDB, 4)
+	// generate test with random mix
+	tests := []*models.ElemTest{}
+
+	for i, item := range testwords.Words {
+		test := models.ElemTest{}
+		test.Words = make([]*models.Word, 4)
 		root_i, _ := rand.Int(rand.Reader, big.NewInt(4))
 
-		test.Words = tools.RandomWords(words, item)
-		test.Words = tools.Insert(test.Words, int(root_i.Int64()), item)
+		test.Words = tools.RandomWords(words, i)
+		test.Words = tools.InsertByIndex(test.Words, int(root_i.Int64()), item)
 		test.Right = int(root_i.Int64())
 
 		tests = append(tests, &test)
@@ -49,7 +54,10 @@ func (s *TestService) GetWordsForTest(name string) ([]*models.WorkTest, error) {
 	return tests, nil
 }
 
-func (s *TestService) CheckTest(words []*models.WordDB, test_name, username string) ([]*models.TestWord, error) {
+func (s *TestService) CheckTest(words []*models.Word, test_name, username string) ([]*models.CheckTestWord, error) {
+	// get right words -> count percent, set time -> return right, wrong words, percent, time
+
+	// get right words and generate map with this words
 	answers, err := s.repo.GetWordsByNames(words)
 	if err != nil {
 		return nil, err
@@ -59,11 +67,13 @@ func (s *TestService) CheckTest(words []*models.WordDB, test_name, username stri
 		answersMap[item.Word] = item.Translate
 	}
 
-	test_answers := []*models.TestWord{}
+	// generate result model and count right words
+	test_answers := []*models.CheckTestWord{}
 
 	percent_i := 0
+
 	for _, item := range words {
-		test_elm := models.TestWord{
+		test_elm := models.CheckTestWord{
 			Word:  item,
 			Check: item.Translate == answersMap[item.Word],
 			Right: answersMap[item.Word],
@@ -74,9 +84,13 @@ func (s *TestService) CheckTest(words []*models.WordDB, test_name, username stri
 		test_answers = append(test_answers, &test_elm)
 	}
 
+	// count percent
 	percent := math.Round((float64(percent_i) * 100 / float64(len(test_answers))))
+
+	// set time
 	time_res := time.Now().Format(time.ANSIC)
 
+	// add result in test
 	res := models.UserResult{Login: username, Percent: int(percent), Res: test_answers, Datatime: time_res}
 	if err = s.repo.AddUserRes(res, test_name); err != nil {
 		return nil, err
@@ -85,7 +99,10 @@ func (s *TestService) CheckTest(words []*models.WordDB, test_name, username stri
 }
 
 func (s *TestService) AddTest(test models.Test) error {
+	// set time
 	test.Datatime = time.Now().Format(time.ANSIC)
+
+	// add test
 	return s.repo.AddTest(test)
 }
 

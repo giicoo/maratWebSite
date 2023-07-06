@@ -5,13 +5,13 @@ import "github.com/giicoo/maratWebSite/models"
 //go:generate $GOPATH/bin/mockgen -source=repo.go -destination=mocks/mock.go
 type Repo interface {
 	// user
-	AddUser(user models.UserDB) error
-	GetUser(login string) (models.UserDB, error)
+	AddUser(user models.User) error
+	GetUserByLogin(login string) (models.User, error)
 
 	//words
-	AddWord(word models.WordDB) error
-	GetWords() ([]*models.WordDB, error)
-	GetWordsByNames(words []*models.WordDB) ([]*models.WordDB, error)
+	AddWord(word models.Word) error
+	GetWords() ([]*models.Word, error)
+	GetWordsByNames(words []*models.Word) ([]*models.Word, error)
 
 	// test
 	AddTest(test models.Test) error

@@ -15,7 +15,8 @@ func (h *Handler) addWord(w http.ResponseWriter, r *http.Request, ps httprouter.
 	body := r.Body
 	defer body.Close()
 
-	word := models.WordDB{}
+	// parse request
+	word := models.Word{}
 
 	if err := json.NewDecoder(body).Decode(&word); err != nil {
 		logrus.Error(err, body)
@@ -23,6 +24,7 @@ func (h *Handler) addWord(w http.ResponseWriter, r *http.Request, ps httprouter.
 		return
 	}
 
+	// add word
 	if err := h.services.WordsServices.AddWord(word); err != nil {
 		logrus.Error(err)
 		http.Error(w, "Service Error", http.StatusInternalServerError)
@@ -35,12 +37,14 @@ func (h *Handler) addWord(w http.ResponseWriter, r *http.Request, ps httprouter.
 func (h *Handler) getWords(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	logrus.Info(r.URL)
 
+	// get words
 	words, err := h.services.WordsServices.GetWord()
 	if err != nil {
 		logrus.Error(err)
 		http.Error(w, "Service Error", http.StatusInternalServerError)
 	}
 
+	// create response
 	jsonValue, err := json.Marshal(words)
 	if err != nil {
 		logrus.Error(err)

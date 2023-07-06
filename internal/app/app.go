@@ -12,6 +12,7 @@ import (
 func Run() error {
 	// tools
 	hash := hashFunc.NewHashTools()
+
 	// insert dependencies
 	repo := mongo_db.NewStore()
 	services := service.NewServices(repo, hash)

@@ -6,9 +6,9 @@ import (
 )
 
 type Services struct {
-	AuthServices  AuthServices
-	WordsServices WordsServices
-	TestServices  TestServices
+	AuthServices  AuthFuncs
+	WordsServices WordsFuncs
+	TestServices  TestFuncs
 }
 
 func NewServices(repo repository.Repo, hash hashFunc.HashTools) *Services {

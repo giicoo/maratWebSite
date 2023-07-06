@@ -12,13 +12,13 @@ import (
 )
 
 func (h *Handler) singUp(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	// Add user from form
+	// Parse ajax to json and send to Auth service
 	logrus.Info(r.URL)
 
 	body := r.Body
 	defer body.Close()
 
-	userToDB := models.UserDB{}
+	userToDB := models.User{}
 
 	if err := json.NewDecoder(body).Decode(&userToDB); err != nil {
 		logrus.Error(err)
@@ -29,7 +29,7 @@ func (h *Handler) singUp(w http.ResponseWriter, r *http.Request, ps httprouter.P
 	user, err := h.services.AuthServices.SingUp(userToDB)
 	if err != nil {
 		logrus.Error(err)
-		http.Error(w, "Database error", http.StatusInternalServerError)
+		http.Error(w, "Service error", http.StatusInternalServerError)
 		return
 	}
 	str := fmt.Sprint("Successful Add ", user.Login)
@@ -37,13 +37,13 @@ func (h *Handler) singUp(w http.ResponseWriter, r *http.Request, ps httprouter.P
 }
 
 func (h *Handler) singIn(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	// Check user from form and set cookie
+	// Parse user from ajax, send to auth service and check
 	logrus.Info(r.URL)
 
 	body := r.Body
 	defer body.Close()
 
-	user := models.UserDB{}
+	user := models.User{}
 
 	if err := json.NewDecoder(body).Decode(&user); err != nil {
 		logrus.Error(err)
@@ -57,7 +57,7 @@ func (h *Handler) singIn(w http.ResponseWriter, r *http.Request, ps httprouter.P
 		http.Error(w, "Invalid Form", http.StatusInternalServerError)
 		return
 	}
-
+	// if we have token, we will save cookie
 	ck := http.Cookie{
 		Name:   "Auth",
 		Value:  token,
@@ -68,7 +68,7 @@ func (h *Handler) singIn(w http.ResponseWriter, r *http.Request, ps httprouter.P
 	w.Write([]byte("Successful login"))
 }
 
-func (h *Handler) sing(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+func (h *Handler) singInUpPage(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	// Page singin/singup form
 	logrus.Info(r.URL)
 

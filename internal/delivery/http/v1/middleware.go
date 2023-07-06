@@ -9,8 +9,9 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func (h *Handler) BasicAuth(hand httprouter.Handle) httprouter.Handle {
+func (h *Handler) CookieAuthorization(handlerFunc httprouter.Handle) httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+
 		// JWT Token in cookie "Auth"
 		token, err := r.Cookie("Auth")
 		if err != nil {
@@ -18,13 +19,17 @@ func (h *Handler) BasicAuth(hand httprouter.Handle) httprouter.Handle {
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
 			return
 		}
+
+		// Check token
 		user, err := auth.ParseJWT(token.Value)
-		if err == nil {
-			r.URL.User = url.User(user)
-			hand(w, r, ps)
+		if err != nil {
+			http.Error(w, "Invalid Token", http.StatusUnauthorized)
+			logrus.Error(err)
 			return
 		}
-		http.Error(w, "Invalid Token", http.StatusUnauthorized)
-		logrus.Error(err)
+
+		// if all OK, go to need handler func
+		r.URL.User = url.User(user)
+		handlerFunc(w, r, ps)
 	}
 }

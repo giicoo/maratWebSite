@@ -1,4 +1,0 @@
-CREATE TABLE IF NOT EXISTS words(  
-    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    word TEXT,
-    translate TEXT)

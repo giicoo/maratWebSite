@@ -7,20 +7,24 @@ import (
 	"github.com/giicoo/maratWebSite/models"
 )
 
-type WordsServices interface {
-	AddWord(w models.WordDB) error
-	GetWord() ([]*models.WordDB, error)
+type WordsFuncs interface {
+	AddWord(w models.Word) error
+	GetWord() ([]*models.Word, error)
 }
 
 type WordsService struct {
 	repo repository.Repo
 }
 
-func (s *WordsService) AddWord(w models.WordDB) error {
+func (s *WordsService) AddWord(w models.Word) error {
+	// set data time
 	w.Datatime = time.Now().Format(time.ANSIC)
+
+	// add word
 	return s.repo.AddWord(w)
 }
 
-func (s *WordsService) GetWord() ([]*models.WordDB, error) {
+func (s *WordsService) GetWord() ([]*models.Word, error) {
+	// get word
 	return s.repo.GetWords()
 }

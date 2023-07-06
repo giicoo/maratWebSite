@@ -7,25 +7,23 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func (s *Store) AddWord(word models.WordDB) error {
-	collection := s.client.Database("maratDB").Collection("words")
-	_, err := collection.InsertOne(context.TODO(), word)
+func (s *Store) AddWord(word models.Word) error {
+	_, err := s.collectionWords.InsertOne(context.TODO(), word)
 	return err
 }
 
-func (s *Store) GetWords() ([]*models.WordDB, error) {
-	collection := s.client.Database("maratDB").Collection("words")
+func (s *Store) GetWords() ([]*models.Word, error) {
 
 	filter := bson.M{}
-	words := []*models.WordDB{}
+	words := []*models.Word{}
 
-	cur, err := collection.Find(context.TODO(), filter)
+	cur, err := s.collectionWords.Find(context.TODO(), filter)
 	if err != nil {
 		return nil, err
 	}
 
 	for cur.Next(context.TODO()) {
-		word := models.WordDB{}
+		word := models.Word{}
 		err := cur.Decode(&word)
 		if err != nil {
 			return nil, err
@@ -36,24 +34,22 @@ func (s *Store) GetWords() ([]*models.WordDB, error) {
 	return words, nil
 }
 
-func (s *Store) GetWordsByNames(words []*models.WordDB) ([]*models.WordDB, error) {
-	collection := s.client.Database("maratDB").Collection("words")
-
+func (s *Store) GetWordsByNames(words []*models.Word) ([]*models.Word, error) {
 	elm_fil := []bson.M{}
 	for _, item := range words {
 		elm_fil = append(elm_fil, bson.M{"word": item.Word})
 	}
 	filter := bson.M{"$or": elm_fil}
 
-	answers := []*models.WordDB{}
+	answers := []*models.Word{}
 
-	cur, err := collection.Find(context.TODO(), filter)
+	cur, err := s.collectionWords.Find(context.TODO(), filter)
 	if err != nil {
 		return nil, err
 	}
 
 	for cur.Next(context.TODO()) {
-		word := models.WordDB{}
+		word := models.Word{}
 		err := cur.Decode(&word)
 		if err != nil {
 			return nil, err
