@@ -1,0 +1,48 @@
+{% extends "templates/index.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="/templates/static/css/test.css">
+<link rel="stylesheet" href="/templates/static/css/res.css">
+{% endblock %}
+
+{% block main %}
+<div class="test-block">
+    <div class="test-name">{{ test_name }}</div>
+    <div class="res-name-wrap">
+        
+        <div class="empty"></div>
+        
+    </div>
+    <div class="res-wrap">
+        <div class="res-right-block">
+            <div class="res-name-right">
+                <img class="check-mark" src="/templates/static/images/галка.png">
+                <div style="display: inline;">ПОЙДЕТ</div>
+            </div>
+            <div class="right">
+                {% for item in answers %}
+                {% if item.Check == true %}
+                <div style="margin: 3px;">{{item.Word.Word}} - {{item.Word.Translate}}</div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="empty"></div>
+        <div class="res-wrong-block">
+            <div class="res-name-wrong">
+                <img class="cross" src="/templates/static/images/крест.png" alt="">
+                <p>БЕДНИ</p>
+            </div>
+            <div class="wrong">
+                {% for item in answers %}
+                {% if item.Check == false %}
+                <div style="margin: 3px;">{{item.Word.Word}} - {{item.Right}}</div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}    
+    
+

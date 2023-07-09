@@ -1,0 +1,26 @@
+{% extends "templates/index.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="/templates/static/css/createtest.css">
+{% endblock %}
+
+{% block main %}
+<div class="title">СОЗДАТЬ ТЕСТ</div>
+<form action="post" id="create-test">
+<div class="name">
+    <label>НАЗВАНИЕ:<input type="text" name="test_name"></label>
+</div>
+<div class="words-wrap">
+    {% for item in words %}
+    <div class="words-4">
+    <label class="word"><input class="word-inp" type="checkbox" name="{{item.Word}}" value="{{item.Translate}}">{{item.Word}} - {{item.Translate}}</label>
+    </div>
+    {% endfor %}
+</div>
+<button class="create" type="button">СОЗДАТЬ</button>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script src="/templates/static/js/createtest.js"></script>
+{% endblock %}

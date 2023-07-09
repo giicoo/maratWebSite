@@ -1,26 +1,26 @@
 $(document).ready(function(){
     $('.onward').click(function (){
-        var tests = document.getElementsByClassName('word_test')
+        var tests = document.getElementsByClassName('word')
         var now = $('meta[name=now]').attr('content');
         if (now != tests.length){
         if (now != 0){
             var last = tests[now-1]
-            last.className = "word_test invisible"
+            last.className = "word invisible"
         }
         var test = tests[now]
         
 
-        test.className = "word_test visible"
+        test.className = "word visible"
         
         $('meta[name=now]').attr('content', parseInt(now)+1);
         }
     }
     )
     $('.submit').click(function (){
-        var tests = document.getElementsByClassName('word_test')
+        var tests = document.getElementsByClassName('word')
         var now = $('meta[name=now]').attr('content');
         var test = tests[now-1]
-        test.className = "word_test invisible"
+        test.className = "word invisible"
     
         var dataForm = $("#form_test").serializeArray();
 
@@ -43,29 +43,21 @@ $(document).ready(function(){
                 method: 'post',
                 data: formData,
                 success: function(dt){
-                    var res = document.getElementById("result")
-                    var x = 0
-                    for (let i = 0; i < dt.length; i++) {
-                        if (dt[i]["check"]) {
-                            var chil = document.createElement("div")
-                            chil.setAttribute("class", "right");
-                            chil.textContent = dt[i]["word"]["word"] + " - " + dt[i]["right"]
-                            res.children[0].appendChild(chil)
-                            x ++
-                        } else {
-                           
-                            var chil = document.createElement("div")
-                            chil.setAttribute("class", "error");
-                            chil.textContent = dt[i]["word"]["word"] + " - " + dt[i]["right"]
-                            res.children[0].appendChild(chil)
+                    var formData2 = JSON.stringify(dt)
+                    $.ajax (
+                        {
+                            url: '/test/res-page/'+test_name,
+                            method: 'post',
+                            data: formData2,
+                            success: function(dt) {
+                                document.body.innerHTML = dt
+                                console.log(dt, document.body.innerHTML)
+                            },
+                            error: function(err) {
+                                console.log(err)
+                            }
                         }
-                      }
-                    res.className = "result visible"
-                    proc = document.getElementById("procent")
-                    proc.textContent = Math.round(x/(dt.length)*100) + "%"
-
-                    test = document.getElementById("test")
-                    test.className = "test testres"
+                    )
                 },
                 error: function (err){
                     console.log(err)

@@ -1,0 +1,21 @@
+{% extends "templates/index.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="/templates/static/css/listtest.css">
+{% endblock %}
+
+{% block main %}
+<div class="content">
+    {% for item in tests %}
+    <a href="/test/{{item.Name}}">
+    <div class="test-l">
+        <div class="icon"></div>
+        <div class="test-wrap">
+            <div class="title">{{item.Name}}</div>
+            <div class="date">{{item.Datatime}}</div>
+        </div>
+    </div>
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}

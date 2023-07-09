@@ -29,3 +29,24 @@ func (s *Store) AddUserRes(res models.UserResult, test_name string) error {
 	_, err := s.collectionTests.UpdateMany(context.TODO(), filter, bson.D{{"$push", bson.D{{"usersresults", res}}}})
 	return err
 }
+
+func (s *Store) GetTests() ([]*models.Test, error) {
+	filter := bson.M{}
+	tests := []*models.Test{}
+
+	cur, err := s.collectionTests.Find(context.TODO(), filter)
+	if err != nil {
+		return nil, err
+	}
+
+	for cur.Next(context.TODO()) {
+		test := models.Test{}
+		err := cur.Decode(&test)
+		if err != nil {
+			return nil, err
+		}
+		tests = append(tests, &test)
+	}
+
+	return tests, nil
+}

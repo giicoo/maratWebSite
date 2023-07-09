@@ -14,7 +14,7 @@ func NewJWT(login string) (string, error) {
 	// + ExpiresAt - time for access
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &models.Claims{
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: jwt.TimeFunc().Add(5 * time.Minute).Unix(),
+			ExpiresAt: jwt.TimeFunc().Add(60 * time.Minute).Unix(),
 			IssuedAt:  jwt.TimeFunc().Unix(),
 		},
 		Login: login,

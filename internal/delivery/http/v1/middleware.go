@@ -16,7 +16,7 @@ func (h *Handler) CookieAuthorization(handlerFunc httprouter.Handle) httprouter.
 		token, err := r.Cookie("Auth")
 		if err != nil {
 			logrus.Error(err)
-			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+			http.Redirect(w, r, "/sing", http.StatusTemporaryRedirect)
 			return
 		}
 

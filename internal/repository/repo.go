@@ -17,4 +17,5 @@ type Repo interface {
 	AddTest(test models.Test) error
 	GetTestByName(name string) (models.Test, error)
 	AddUserRes(res models.UserResult, test_name string) error
+	GetTests() ([]*models.Test, error)
 }

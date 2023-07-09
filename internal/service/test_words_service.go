@@ -13,6 +13,7 @@ import (
 
 type TestFuncs interface {
 	GetTestByName(name string) (models.Test, error)
+	GetTests() ([]*models.Test, error)
 	AddTest(words models.Test) error
 	GetWordsForTest(name string) ([]*models.ElemTest, error)
 	CheckTest(words []*models.Word, test_name, username string) ([]*models.CheckTestWord, error)
@@ -108,4 +109,8 @@ func (s *TestService) AddTest(test models.Test) error {
 
 func (s *TestService) GetTestByName(name string) (models.Test, error) {
 	return s.repo.GetTestByName(name)
+}
+
+func (s *TestService) GetTests() ([]*models.Test, error) {
+	return s.repo.GetTests()
 }

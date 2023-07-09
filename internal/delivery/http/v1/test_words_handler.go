@@ -11,6 +11,25 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+func (h *Handler) testsPage(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	logrus.Info(r.URL)
+	tests, err := h.services.TestServices.GetTests()
+	if err != nil {
+		logrus.Error(err)
+		http.Error(w, "Service error", http.StatusInternalServerError)
+		return
+	}
+	// create template
+	tpl := gonja.Must(gonja.FromFile("/templates/listtest.html"))
+	out, err := tpl.Execute(gonja.Context{"tests": tests, "user": r.URL.User})
+	if err != nil {
+		logrus.Error(err)
+		http.Error(w, "Server Error", http.StatusInternalServerError)
+		return
+	}
+	w.Write([]byte(out))
+
+}
 func (h *Handler) testPageByName(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	// Page test with name from Params
 	logrus.Info(r.URL)
@@ -23,9 +42,9 @@ func (h *Handler) testPageByName(w http.ResponseWriter, r *http.Request, ps http
 	}
 
 	// create template
-	tpl := gonja.Must(gonja.FromFile("/templates/main.html"))
+	tpl := gonja.Must(gonja.FromFile("/templates/test.html"))
 
-	out, err := tpl.Execute(gonja.Context{"words": words, "first": words[0], "last": words[len(words)-1], "test_name": ps.ByName("name")})
+	out, err := tpl.Execute(gonja.Context{"words": words, "first": words[0], "last": words[len(words)-1], "test_name": ps.ByName("name"), "user": r.URL.User})
 	if err != nil {
 		logrus.Error(err)
 		http.Error(w, "Server Error", http.StatusInternalServerError)
@@ -119,4 +138,51 @@ func (h *Handler) addTest(w http.ResponseWriter, r *http.Request, ps httprouter.
 	}
 	str := fmt.Sprint("Successful Add ", test.Name)
 	w.Write([]byte(str))
+}
+
+func (h *Handler) resPage(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	logrus.Info(r.URL)
+
+	body := r.Body
+	defer body.Close()
+
+	answers := []*models.CheckTestWord{}
+
+	err := json.NewDecoder(body).Decode(&answers)
+	if err != nil {
+		logrus.Error("JSON", err)
+		http.Error(w, "Invalid JSON", http.StatusBadRequest)
+		return
+	}
+
+	// create template
+	tpl := gonja.Must(gonja.FromFile("/templates/res.html"))
+
+	out, err := tpl.Execute(gonja.Context{"answers": answers, "test_name": ps.ByName("test_name"), "user": r.URL.User})
+	if err != nil {
+		logrus.Error(err)
+		http.Error(w, "Server Error", http.StatusInternalServerError)
+	}
+	w.Write([]byte(out))
+}
+
+func (h *Handler) createTestPage(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	logrus.Info(r.URL)
+
+	words, err := h.services.WordsServices.GetWord()
+	if err != nil {
+		logrus.Error(err)
+		http.Error(w, "Service error", http.StatusInternalServerError)
+		return
+	}
+
+	// create template
+	tpl := gonja.Must(gonja.FromFile("/templates/createtest.html"))
+
+	out, err := tpl.Execute(gonja.Context{"words": words, "user": r.URL.User})
+	if err != nil {
+		logrus.Error(err)
+		http.Error(w, "Server Error", http.StatusInternalServerError)
+	}
+	w.Write([]byte(out))
 }

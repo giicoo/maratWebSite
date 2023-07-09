@@ -1,0 +1,76 @@
+.test-block {
+    height: 100%;
+    width: 100%;
+    margin: 0 10%;
+}
+.res-right-block, .res-wrong-block {
+    margin-bottom: 20px;
+    background-color: whitesmoke;
+    width: 100%;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+
+.right, .wrong {
+    padding: 10px;
+    font-size: 25px;
+    text-align: center;
+    overflow: scroll;
+    width: 100%;
+    height: 84%;
+   
+}
+.right {
+    background-color: rgb(0, 255, 0);
+}
+.wrong {
+    background-color: rgb(255, 5, 5);
+}
+.res-wrap {
+    width: 100%;
+    min-height: 50%;
+    display: flex;
+    justify-content: space-between;
+    max-height: 70%;
+}
+.empty {
+    width: 30%;
+    height: 100%;
+}
+@media only screen and (max-width: 700px) {
+    .right, .wrong {
+        font-size: 15px;
+    }
+}
+@media only screen and (max-width: 550px) {
+    .res-wrap {
+        flex-direction: column;
+    }
+}
+
+
+
+
+
+
+
+
+.res-name-wrap {
+    display: flex;
+    justify-content: space-between;
+    
+}
+.check-mark, .cross {
+    margin: 10px;
+    display: inline;
+    height: 50px;
+    width: 50px;
+}
+.res-name-right, .res-name-wrong {
+    line-height: 2;
+    padding: 5px;
+    width: 100%;
+    font-size: 35px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}

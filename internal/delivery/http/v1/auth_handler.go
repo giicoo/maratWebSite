@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/giicoo/maratWebSite/models"
 	"github.com/julienschmidt/httprouter"
@@ -59,9 +60,10 @@ func (h *Handler) singIn(w http.ResponseWriter, r *http.Request, ps httprouter.P
 	}
 	// if we have token, we will save cookie
 	ck := http.Cookie{
-		Name:   "Auth",
-		Value:  token,
-		MaxAge: 3600,
+		Name:     "Auth",
+		Value:    token,
+		MaxAge:   3600,
+		SameSite: http.SameSiteNoneMode,
 	}
 
 	http.SetCookie(w, &ck)
@@ -80,4 +82,14 @@ func (h *Handler) singInUpPage(w http.ResponseWriter, r *http.Request, ps httpro
 		http.Error(w, "Server Error", http.StatusInternalServerError)
 	}
 	w.Write([]byte(out))
+}
+
+func (h *Handler) logout(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	c := http.Cookie{
+		Name:     "Auth",
+		Expires:  time.Unix(0, 0),
+		SameSite: http.SameSiteNoneMode,
+		HttpOnly: true,
+	}
+	http.SetCookie(w, &c)
 }

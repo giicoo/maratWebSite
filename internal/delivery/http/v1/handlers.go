@@ -5,6 +5,7 @@ import (
 
 	"github.com/giicoo/maratWebSite/internal/service"
 	"github.com/julienschmidt/httprouter"
+	"github.com/noirbizarre/gonja"
 	"github.com/sirupsen/logrus"
 )
 
@@ -27,16 +28,21 @@ func (h *Handler) InitHandlers() http.Handler {
 	r.POST("/singup", h.singUp)
 	r.POST("/singin", h.singIn)
 	r.GET("/sing", h.singInUpPage)
+	r.POST("/logout", h.logout)
 
 	// words
-	r.POST("/add-word", h.addWord)
-	r.POST("/get-words", h.getWords)
+	r.POST("/add-word", h.CookieAuthorization(h.addWord))
+	r.POST("/get-words", h.CookieAuthorization(h.getWords))
+	r.POST("/get-words-by-names", h.CookieAuthorization(h.getWordsByNames))
 
 	//test
-	r.GET("/test/:name", h.testPageByName)
+	r.GET("/tests", h.CookieAuthorization(h.testsPage))
+	r.GET("/test/:name", h.CookieAuthorization(h.testPageByName))
 	r.POST("/check-test/:test_name", h.CookieAuthorization(h.checkTest))
-	r.POST("/get-words-for-test/:name", h.getWordsForTest)
-	r.POST("/add-test", h.addTest)
+	r.POST("/test/res-page/:test_name", h.CookieAuthorization(h.resPage))
+	r.POST("/get-words-for-test/:name", h.CookieAuthorization(h.getWordsForTest))
+	r.GET("/create-test", h.CookieAuthorization(h.createTestPage))
+	r.POST("/add-test", h.CookieAuthorization(h.addTest))
 
 	// static file
 	r.ServeFiles("/templates/*filepath", http.Dir("templates"))
@@ -46,5 +52,14 @@ func (h *Handler) InitHandlers() http.Handler {
 
 func (h *Handler) index(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	logrus.Info(r.URL)
-	w.Write([]byte("Home"))
+
+	// create template
+	tpl := gonja.Must(gonja.FromFile("/templates/index.html"))
+
+	out, err := tpl.Execute(gonja.Context{"user": r.URL.User})
+	if err != nil {
+		logrus.Error(err)
+		http.Error(w, "Server Error", http.StatusInternalServerError)
+	}
+	w.Write([]byte(out))
 }

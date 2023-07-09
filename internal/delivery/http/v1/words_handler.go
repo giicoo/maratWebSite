@@ -54,3 +54,36 @@ func (h *Handler) getWords(w http.ResponseWriter, r *http.Request, ps httprouter
 	w.Header().Add("Content-Type", "application/json")
 	w.Write(jsonValue)
 }
+
+func (h *Handler) getWordsByNames(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	logrus.Info(r.URL)
+
+	body := r.Body
+	defer body.Close()
+
+	// parse request
+	words_data := []*models.Word{}
+
+	if err := json.NewDecoder(body).Decode(&words_data); err != nil {
+		logrus.Error(err, body)
+		http.Error(w, "Invalid JSON", http.StatusBadRequest)
+		return
+	}
+
+	// get words
+	words, err := h.services.WordsServices.GetWordsByNames(words_data)
+	if err != nil {
+		logrus.Error(err)
+		http.Error(w, "Service Error", http.StatusInternalServerError)
+	}
+
+	// create response
+	jsonValue, err := json.Marshal(words)
+	if err != nil {
+		logrus.Error(err)
+		http.Error(w, "Invalid JSON", http.StatusBadRequest)
+		return
+	}
+	w.Header().Add("Content-Type", "application/json")
+	w.Write(jsonValue)
+}

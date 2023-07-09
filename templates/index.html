@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/templates/static/css/index.css">
+    {% block style %}
+    {% endblock %}
+    <title>marat-tatar</title>
+</head>
+<body>
+    <div class="wrapper">
+    <div class="header">
+        <div class="content">
+            <div class="header-wrap">
+                <div class="header-left">
+                    <a href="/" class="menu-a">ГЛАВНАЯ</a>
+                    <a href="/tests" class="menu-a">ТЕСТЫ</a>
+                </div>
+                <div class="header-right">
+                    <button class="sing-in-up">{{ user }}</button>
+                    <button class="logout">ВЫЙТИ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main">
+    {% block main %}
+    <style>.main{
+        text-align: center;
+    }</style>
+    <div class="center">Я не придумал что тут</div>
+    <div class="center" style="margin: 10px;">Вот ссылка на тесты: <a href="/tests" style="background-color: aquamarine; ">БЕДНИ</a></div>
+    {% endblock %}
+    </div>
+    
+
+    <div class="footer">
+        <div class="content">
+        <div class="footer-wrap">
+            <div class="footer-left">НЕКОМЕРЧЕСКОЕ РАЗВЛЕКАТЕЛЬНОЕ СООБЩЕСТВО ЛЮБИТЕЛЕЙ ЭЧПАЧМАКОВ</div>
+            <div class="footer-right">
+                <a href="" class="tg-a">TG</a>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="/templates/static/js/index.js"></script>
+    {% block scripts %}
+    {% endblock %}
+</body>
+</html>
