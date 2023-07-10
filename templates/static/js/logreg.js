@@ -31,6 +31,7 @@ $(document).ready(function(){
                     console.log(dt)
                 },
                 error: function (err){
+                    $('.error').css('display', 'block')
                     console.log(err)
                 },
                 contentType : "application/json"

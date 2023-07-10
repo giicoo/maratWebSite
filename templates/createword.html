@@ -1,0 +1,20 @@
+{% extends "templates/index.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="/templates/static/css/createtest.css">
+{% endblock %}
+
+{% block main %}
+<div class="title">СОЗДАТЬ CЛОВО</div>
+<form action="post" id="create-word">
+<div class="name">
+    <label>СЛОВО:<input type="text" name="name"></label>
+    <label>ПЕРЕВОД:<input type="text" name="translate"></label>
+</div>
+<button class="create" type="button">СОЗДАТЬ</button>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script src="/templates/static/js/createword.js"></script>
+{% endblock %}

@@ -41,6 +41,11 @@ func (s *AuthService) SingUp(u models.User) (models.User, error) {
 	}
 	u.Password = hash
 
+	// check exist user
+	check, err := s.repo.GetUserByLogin(u.Login)
+	if check.Login != "" {
+		return models.User{}, errors.New("User already exist")
+	}
 	// set data time
 	u.Datatime = time.Now().Format(time.ANSIC)
 

@@ -31,7 +31,8 @@ func (h *Handler) InitHandlers() http.Handler {
 	r.POST("/logout", h.logout)
 
 	// words
-	r.POST("/add-word", h.CookieAuthorization(h.addWord))
+	r.GET("/create-word", h.CookieAuthorizationAdmin(h.createWordPage))
+	r.POST("/add-word", h.CookieAuthorizationAdmin(h.addWord))
 	r.POST("/get-words", h.CookieAuthorization(h.getWords))
 	r.POST("/get-words-by-names", h.CookieAuthorization(h.getWordsByNames))
 
@@ -41,8 +42,8 @@ func (h *Handler) InitHandlers() http.Handler {
 	r.POST("/check-test/:test_name", h.CookieAuthorization(h.checkTest))
 	r.POST("/test/res-page/:test_name", h.CookieAuthorization(h.resPage))
 	r.POST("/get-words-for-test/:name", h.CookieAuthorization(h.getWordsForTest))
-	r.GET("/create-test", h.CookieAuthorization(h.createTestPage))
-	r.POST("/add-test", h.CookieAuthorization(h.addTest))
+	r.GET("/create-test", h.CookieAuthorizationAdmin(h.createTestPage))
+	r.POST("/add-test", h.CookieAuthorizationAdmin(h.addTest))
 
 	// static file
 	r.ServeFiles("/templates/*filepath", http.Dir("templates"))

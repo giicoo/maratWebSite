@@ -29,6 +29,11 @@ func (h *Handler) singUp(w http.ResponseWriter, r *http.Request, ps httprouter.P
 
 	user, err := h.services.AuthServices.SingUp(userToDB)
 	if err != nil {
+		if err.Error() == "User already exist" {
+			logrus.Error(err)
+			http.Error(w, "User already exist", http.StatusBadRequest)
+			return
+		}
 		logrus.Error(err)
 		http.Error(w, "Service error", http.StatusInternalServerError)
 		return

@@ -6,6 +6,7 @@ import (
 
 	"github.com/giicoo/maratWebSite/models"
 	"github.com/julienschmidt/httprouter"
+	"github.com/noirbizarre/gonja"
 	"github.com/sirupsen/logrus"
 )
 
@@ -86,4 +87,18 @@ func (h *Handler) getWordsByNames(w http.ResponseWriter, r *http.Request, ps htt
 	}
 	w.Header().Add("Content-Type", "application/json")
 	w.Write(jsonValue)
+}
+
+func (h *Handler) createWordPage(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	logrus.Info(r.URL)
+
+	// create template
+	tpl := gonja.Must(gonja.FromFile("/templates/createword.html"))
+
+	out, err := tpl.Execute(gonja.Context{"user": r.URL.User})
+	if err != nil {
+		logrus.Error(err)
+		http.Error(w, "Server Error", http.StatusInternalServerError)
+	}
+	w.Write([]byte(out))
 }
