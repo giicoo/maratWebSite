@@ -4,3 +4,6 @@ build:
 
 run: build
 	./.bin/app.exe
+
+test_service: 
+	go test ./test/service

@@ -3,6 +3,7 @@ package http_v1_test
 import (
 	"errors"
 	"testing"
+	"time"
 
 	mock_repository "github.com/giicoo/maratWebSite/internal/repository/mocks"
 	"github.com/giicoo/maratWebSite/internal/service"
@@ -19,15 +20,15 @@ func TestGetWords(t *testing.T) {
 		name           string
 		mockBehavior   mockBehavior
 		expectedError  error
-		expectedAnswer []*models.WordDB
+		expectedAnswer []*models.Word
 	}{
 		{
 			name: "OK",
 			mockBehavior: func(r *mock_repository.MockRepo) {
-				r.EXPECT().GetWords().Return([]*models.WordDB{{Word: "test", Translate: "test_t"}}, nil)
+				r.EXPECT().GetWords().Return([]*models.Word{{Word: "test", Translate: "test_t"}}, nil)
 			},
 			expectedError:  nil,
-			expectedAnswer: []*models.WordDB{{Word: "test", Translate: "test_t"}},
+			expectedAnswer: []*models.Word{{Word: "test", Translate: "test_t"}},
 		},
 		{
 			name: "Empty",
@@ -70,26 +71,26 @@ func TestGetWords(t *testing.T) {
 }
 
 func TestAddWord(t *testing.T) {
-	type mockBehavior func(r *mock_repository.MockRepo, word models.WordDB)
+	type mockBehavior func(r *mock_repository.MockRepo, word models.Word)
 
 	tests := []struct {
 		name          string
-		inputWord     models.WordDB
+		inputWord     models.Word
 		mockBehavior  mockBehavior
 		expectedError error
 	}{
 		{
 			name:      "OK",
-			inputWord: models.WordDB{Word: "test", Translate: "test_t"},
-			mockBehavior: func(r *mock_repository.MockRepo, word models.WordDB) {
+			inputWord: models.Word{Word: "test", Translate: "test_t", Datatime: time.Now().Format(time.ANSIC)},
+			mockBehavior: func(r *mock_repository.MockRepo, word models.Word) {
 				r.EXPECT().AddWord(word).Return(nil)
 			},
 			expectedError: nil,
 		},
 		{
 			name:      "Service Error",
-			inputWord: models.WordDB{Word: "test", Translate: "test_t"},
-			mockBehavior: func(r *mock_repository.MockRepo, word models.WordDB) {
+			inputWord: models.Word{Word: "test", Translate: "test_t", Datatime: time.Now().Format(time.ANSIC)},
+			mockBehavior: func(r *mock_repository.MockRepo, word models.Word) {
 				r.EXPECT().AddWord(word).Return(errors.New("Test Error"))
 			},
 			expectedError: errors.New("Test Error"),

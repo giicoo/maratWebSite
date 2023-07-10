@@ -12,9 +12,10 @@ import (
 )
 
 type TestFuncs interface {
+	// TODO: delete test
 	GetTestByName(name string) (models.Test, error)
 	GetTests() ([]*models.Test, error)
-	AddTest(words models.Test) error
+	AddTest(test models.Test) error
 	GetWordsForTest(name string) ([]*models.ElemTest, error)
 	CheckTest(words []*models.Word, test_name, username string) ([]*models.CheckTestWord, error)
 }
