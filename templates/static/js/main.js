@@ -50,8 +50,9 @@ $(document).ready(function(){
                             method: 'post',
                             data: formData2,
                             success: function(dt) {
-                                document.body.innerHTML = dt
-                                console.log(dt, document.body.innerHTML)
+                                document.getElementsByClassName("main")[0].innerHTML = dt
+                                
+                                console.log(dt)
                             },
                             error: function(err) {
                                 console.log(err)

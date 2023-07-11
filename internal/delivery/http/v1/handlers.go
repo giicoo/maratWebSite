@@ -45,6 +45,8 @@ func (h *Handler) InitHandlers() http.Handler {
 	r.GET("/create-test", h.CookieAuthorizationAdmin(h.createTestPage))
 	r.POST("/add-test", h.CookieAuthorizationAdmin(h.addTest))
 
+	// statistics
+	r.POST("/statics", h.CookieAuthorizationAdmin(h.StatisticsGet))
 	// static file
 	r.ServeFiles("/templates/*filepath", http.Dir("templates"))
 
