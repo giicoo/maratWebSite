@@ -4,6 +4,7 @@ import (
 	"errors"
 	"time"
 
+	"github.com/giicoo/maratWebSite/configs"
 	"github.com/giicoo/maratWebSite/internal/repository"
 	"github.com/giicoo/maratWebSite/internal/service/auth"
 	"github.com/giicoo/maratWebSite/models"
@@ -15,6 +16,7 @@ type AuthFuncs interface {
 	SingUp(u models.User) (models.User, error)
 }
 type AuthService struct {
+	cfg       *configs.Config
 	repo      repository.Repo
 	hashTools hashFunc.HashTools
 }

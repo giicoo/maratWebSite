@@ -10,6 +10,7 @@ type Repo interface {
 
 	//words
 	AddWord(word models.Word) error
+	DeleteWord(w models.Word) error
 	GetWords() ([]*models.Word, error)
 	GetWordsByNames(words []*models.Word) ([]*models.Word, error)
 
@@ -18,4 +19,5 @@ type Repo interface {
 	GetTestByName(name string) (models.Test, error)
 	AddUserRes(res models.UserResult, test_name string) error
 	GetTests() ([]*models.Test, error)
+	DeleteTest(w models.Test) error
 }

@@ -1,6 +1,9 @@
 package app
 
 import (
+	"fmt"
+
+	"github.com/giicoo/maratWebSite/configs"
 	http_v1 "github.com/giicoo/maratWebSite/internal/delivery/http/v1"
 	mongo_db "github.com/giicoo/maratWebSite/internal/repository/mongodb"
 	"github.com/giicoo/maratWebSite/internal/server"
@@ -13,10 +16,16 @@ func Run() error {
 	// tools
 	hash := hashFunc.NewHashTools()
 
+	// config
+	cfg, err := configs.GetConfig("./configs/config.json")
+	if err != nil {
+		return err
+	}
+
 	// insert dependencies
-	repo := mongo_db.NewStore()
-	services := service.NewServices(repo, hash)
-	handler := http_v1.NewHandler(services)
+	repo := mongo_db.NewStore(cfg)
+	services := service.NewServices(repo, hash, cfg)
+	handler := http_v1.NewHandler(services, cfg)
 
 	// init handlers
 	r := handler.InitHandlers()
@@ -27,7 +36,7 @@ func Run() error {
 	}
 
 	// init and start server
-	srv := server.NewServer("localhost:8000", r)
+	srv := server.NewServer(fmt.Sprintf("%v:%v", cfg.HOST, cfg.PORT), r)
 
 	if err := srv.Start(); err != nil {
 		return err

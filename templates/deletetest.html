@@ -1,0 +1,23 @@
+{% extends "templates/index.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="/templates/static/css/createtest.css">
+{% endblock %}
+
+{% block main %}
+<div class="title">УДАЛИТЬ TECT</div>
+<form id="delete-test">
+<div class="words-wrap">
+    {% for item in tests %}
+    <div class="words-4">
+    <label class="word"><input class="word-inp" type="checkbox" name="{{item.Name}}" value="{{item.Name}}">{{item.Name}}</label>
+    </div>
+    {% endfor %}
+</div>
+<button class="delete" type="button">УДАЛИТЬ</button>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script src="/templates/static/js/deletetest.js"></script>
+{% endblock %}

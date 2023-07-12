@@ -12,6 +12,12 @@ func (s *Store) AddWord(word models.Word) error {
 	return err
 }
 
+func (s *Store) DeleteWord(w models.Word) error {
+	filter := bson.M{"word": w.Word}
+
+	_, err := s.collectionWords.DeleteOne(context.TODO(), filter)
+	return err
+}
 func (s *Store) GetWords() ([]*models.Word, error) {
 
 	filter := bson.M{}

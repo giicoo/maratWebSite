@@ -12,6 +12,13 @@ func (s *Store) AddTest(test models.Test) error {
 	return err
 }
 
+func (s *Store) DeleteTest(w models.Test) error {
+	filter := bson.M{"name": w.Name}
+
+	_, err := s.collectionTests.DeleteOne(context.TODO(), filter)
+	return err
+}
+
 func (s *Store) GetTestByName(name string) (models.Test, error) {
 	filter := bson.M{"name": name}
 

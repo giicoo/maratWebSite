@@ -2,6 +2,7 @@ package http_v1
 
 import (
 	"net/http"
+	"os"
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/sirupsen/logrus"
@@ -13,8 +14,6 @@ func (h *Handler) StatisticsGet(w http.ResponseWriter, r *http.Request, ps httpr
 	body := r.Body
 	defer body.Close()
 
-	// statistics := []*models.StatisticsExcel{{TestName: "test", Login: "tes", Percent: 10}}
-	// detail_statistics := []*models.StatisticsUserExcel{{TestName: "test", Login: "tes", Percent: 10, CheckWordExcel: models.CheckWordExcel{WordExcel: models.WordExcel{Word: "t", Translate: "tt"}, Check: true, Right: "tt"}}}
 	tests, err := h.services.TestServices.GetTests()
 	if err != nil {
 		logrus.Error(err)
@@ -29,10 +28,13 @@ func (h *Handler) StatisticsGet(w http.ResponseWriter, r *http.Request, ps httpr
 		return
 	}
 
-	// err = h.services.StatisticsServices.WriteExcel(detail_statistics)
-	// if err != nil {
-	// 	logrus.Error(err)
-	// 	http.Error(w, "Service error", http.StatusInternalServerError)
-	// 	return
-	// }
+	file, err := os.ReadFile(h.cfg.STAT_PATH)
+	if err != nil {
+		logrus.Error(err)
+		http.Error(w, "Service error", http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+	w.Header().Add("Content-Disposition", "attachment")
+	w.Write(file)
 }

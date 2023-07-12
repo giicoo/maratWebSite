@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"reflect"
 
+	"github.com/giicoo/maratWebSite/configs"
 	"github.com/giicoo/maratWebSite/models"
 	"github.com/plandem/xlsx"
 	"github.com/plandem/xlsx/format/styles"
@@ -14,6 +15,7 @@ type StatisticsFunc interface {
 }
 
 type StatisticsService struct {
+	cfg  *configs.Config
 	path string
 }
 
@@ -40,10 +42,10 @@ func (s *StatisticsService) CreateStatistics(tests []*models.Test) error {
 			stats = append(stats, stat)
 		}
 	}
-	return WriteExcel(stats, detail_stats)
+	return WriteExcel(stats, detail_stats, s.cfg.STAT_PATH)
 }
 
-func WriteExcel(stats []*models.StatisticsExcel, detail_statistics []*models.CheckWordExcel) error {
+func WriteExcel(stats []*models.StatisticsExcel, detail_statistics []*models.CheckWordExcel, path string) error {
 	xl := xlsx.New()
 	defer xl.Close()
 
@@ -51,7 +53,6 @@ func WriteExcel(stats []*models.StatisticsExcel, detail_statistics []*models.Che
 	sheet := xl.AddSheet("Statistics")
 	initMain(sheet)
 
-	// stats := []*models.StatisticsExcel{{TestName: "test", Login: "tes", Percent: 10, Average: 65}, {TestName: "test", Login: "te", Percent: 10, Average: 65}}
 	for j, row := range stats {
 		j++
 		e := reflect.ValueOf(row).Elem()
@@ -65,7 +66,6 @@ func WriteExcel(stats []*models.StatisticsExcel, detail_statistics []*models.Che
 			if varName == "Login" {
 				sheet := xl.SheetByName(fmt.Sprintf("%v", varValue))
 				if sheet == nil {
-
 					sheet = xl.AddSheet(fmt.Sprintf("%v", varValue))
 				}
 				sheet = initDetail(sheet)
@@ -77,7 +77,6 @@ func WriteExcel(stats []*models.StatisticsExcel, detail_statistics []*models.Che
 	}
 
 	// create detail static sheet
-	// detail_statistics := []*models.CheckWordExcel{{TestName: "test", Login: "te", Word: "t", Translate: "tt", Right: "tt"}, {TestName: "test", Login: "te", Word: "te", Translate: "tt", Right: "tt"}, {TestName: "test", Login: "tes", Word: "t", Translate: "tt", Right: "tt"}}
 	rows := map[string]int{}
 	for _, user := range detail_statistics {
 		sheet := xl.SheetByName(user.Login)
@@ -107,15 +106,16 @@ func WriteExcel(stats []*models.StatisticsExcel, detail_statistics []*models.Che
 						))
 					}
 				}
+
 			}
 		}
 	}
 
-	return xl.SaveAs("./files/statt.xlsx")
+	return xl.SaveAs(path)
 }
 
 func initMain(sheet xlsx.Sheet) {
-	stats := models.StatisticsExcel{TestName: "", Login: "", Percent: 0, Average: 0}
+	stats := models.StatisticsExcel{TestName: "", Login: "", Percent: 0}
 	e := reflect.ValueOf(&stats).Elem()
 	for i := 0; i < e.NumField(); i++ {
 		varName := e.Type().Field(i).Name

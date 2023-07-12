@@ -6,21 +6,23 @@ import (
 	"math/big"
 	"time"
 
+	"github.com/giicoo/maratWebSite/configs"
 	"github.com/giicoo/maratWebSite/internal/repository"
 	"github.com/giicoo/maratWebSite/internal/service/tools"
 	"github.com/giicoo/maratWebSite/models"
 )
 
 type TestFuncs interface {
-	// TODO: delete test
 	GetTestByName(name string) (models.Test, error)
 	GetTests() ([]*models.Test, error)
 	AddTest(test models.Test) error
+	DeleteTest(t []*models.Test) error
 	GetWordsForTest(name string) ([]*models.ElemTest, error)
 	CheckTest(words []*models.Word, test_name, username string) ([]*models.CheckTestWord, error)
 }
 
 type TestService struct {
+	cfg  *configs.Config
 	repo repository.Repo
 }
 
@@ -106,6 +108,16 @@ func (s *TestService) AddTest(test models.Test) error {
 
 	// add test
 	return s.repo.AddTest(test)
+}
+
+func (s *TestService) DeleteTest(t []*models.Test) error {
+	for _, test := range t {
+		err := s.repo.DeleteTest(*test)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (s *TestService) GetTestByName(name string) (models.Test, error) {

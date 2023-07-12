@@ -3,24 +3,26 @@ package mongo_db
 import (
 	"context"
 
+	"github.com/giicoo/maratWebSite/configs"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type Store struct {
+	cfg             *configs.Config
 	client          *mongo.Client
 	collectionWords *mongo.Collection
 	collectionTests *mongo.Collection
 	collectionUsers *mongo.Collection
 }
 
-func NewStore() *Store {
-	return &Store{}
+func NewStore(cfg *configs.Config) *Store {
+	return &Store{cfg: cfg}
 }
 
 func (s *Store) InitDB() error {
 	// create connection
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+	clientOptions := options.Client().ApplyURI(s.cfg.MONGO_DB)
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
 		return err

@@ -20,7 +20,7 @@ func (h *Handler) addWord(w http.ResponseWriter, r *http.Request, ps httprouter.
 	word := models.Word{}
 
 	if err := json.NewDecoder(body).Decode(&word); err != nil {
-		logrus.Error(err, body)
+		logrus.Error(err)
 		http.Error(w, "Invalid JSON", http.StatusBadRequest)
 		return
 	}
@@ -35,6 +35,45 @@ func (h *Handler) addWord(w http.ResponseWriter, r *http.Request, ps httprouter.
 	w.Write([]byte("Successful Add"))
 }
 
+func (h *Handler) deleteWord(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	logrus.Info(r.URL)
+
+	body := r.Body
+	defer body.Close()
+
+	word := []*models.Word{}
+	if err := json.NewDecoder(body).Decode(&word); err != nil {
+		logrus.Error(err)
+		http.Error(w, "Invalid JSON", http.StatusBadRequest)
+		return
+	}
+
+	err := h.services.WordsServices.DeleteWord(word)
+	if err != nil {
+		logrus.Error(err)
+		http.Error(w, "Service error", http.StatusInternalServerError)
+		return
+	}
+}
+func (h *Handler) deleteWordPage(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	logrus.Info(r.URL)
+
+	// get words
+	words, err := h.services.WordsServices.GetWord()
+	if err != nil {
+		logrus.Error(err)
+		http.Error(w, "Service Error", http.StatusInternalServerError)
+	}
+	// create template
+	tpl := gonja.Must(gonja.FromFile("/templates/deleteword.html"))
+
+	out, err := tpl.Execute(gonja.Context{"user": r.URL.User, "words": words})
+	if err != nil {
+		logrus.Error(err)
+		http.Error(w, "Server Error", http.StatusInternalServerError)
+	}
+	w.Write([]byte(out))
+}
 func (h *Handler) getWords(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	logrus.Info(r.URL)
 
@@ -66,7 +105,7 @@ func (h *Handler) getWordsByNames(w http.ResponseWriter, r *http.Request, ps htt
 	words_data := []*models.Word{}
 
 	if err := json.NewDecoder(body).Decode(&words_data); err != nil {
-		logrus.Error(err, body)
+		logrus.Error(err)
 		http.Error(w, "Invalid JSON", http.StatusBadRequest)
 		return
 	}

@@ -186,3 +186,44 @@ func (h *Handler) createTestPage(w http.ResponseWriter, r *http.Request, ps http
 	}
 	w.Write([]byte(out))
 }
+
+func (h *Handler) deleteTestPage(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	logrus.Info(r.URL)
+
+	// get words
+	tests, err := h.services.TestServices.GetTests()
+	if err != nil {
+		logrus.Error(err)
+		http.Error(w, "Service Error", http.StatusInternalServerError)
+	}
+	// create template
+	tpl := gonja.Must(gonja.FromFile("/templates/deletetest.html"))
+
+	out, err := tpl.Execute(gonja.Context{"user": r.URL.User, "tests": tests})
+	if err != nil {
+		logrus.Error(err)
+		http.Error(w, "Server Error", http.StatusInternalServerError)
+	}
+	w.Write([]byte(out))
+}
+
+func (h *Handler) deleteTest(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	logrus.Info(r.URL)
+
+	body := r.Body
+	defer body.Close()
+
+	tests := []*models.Test{}
+	if err := json.NewDecoder(body).Decode(&tests); err != nil {
+		logrus.Error(err)
+		http.Error(w, "Invalid JSON", http.StatusBadRequest)
+		return
+	}
+
+	err := h.services.TestServices.DeleteTest(tests)
+	if err != nil {
+		logrus.Error(err)
+		http.Error(w, "Service error", http.StatusInternalServerError)
+		return
+	}
+}

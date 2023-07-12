@@ -4,7 +4,6 @@ type StatisticsExcel struct {
 	TestName string `color:"#ace466"`
 	Login    string `color:"#ffff38"`
 	Percent  int    `color:"#ffbf00"`
-	Average  int    `color:"#ffa28a"`
 }
 
 type CheckWordExcel struct {

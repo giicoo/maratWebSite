@@ -1,0 +1,12 @@
+{
+    "HOST":"localhost",
+    "PORT": "8000",
+
+    "ADMIN_LOGIN": "admin",
+
+    "TIME_COOKIE": 3600,
+
+    "MONGO_DB":"mongodb://localhost:27017",
+
+    "STAT_PATH":"./files/stat.xlsx"
+}

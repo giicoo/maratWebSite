@@ -52,7 +52,7 @@ func (h *Handler) CookieAuthorizationAdmin(handlerFunc httprouter.Handle) httpro
 			logrus.Error(err)
 			return
 		}
-		if user != "admin" {
+		if user != h.cfg.ADMIN_LOGIN {
 			http.Error(w, "You are not admin", http.StatusUnauthorized)
 			return
 		}

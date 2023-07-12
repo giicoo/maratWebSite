@@ -67,7 +67,7 @@ func (h *Handler) singIn(w http.ResponseWriter, r *http.Request, ps httprouter.P
 	ck := http.Cookie{
 		Name:     "Auth",
 		Value:    token,
-		MaxAge:   3600,
+		MaxAge:   h.cfg.TIME_COOKIE,
 		SameSite: http.SameSiteNoneMode,
 	}
 

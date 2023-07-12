@@ -17,3 +17,9 @@
     justify-content: space-between;
     padding: 10px;
 }
+
+@media only screen and (max-width: 500px) {
+    .test-l {
+        font-size: 12px;
+    }
+}
