@@ -29,18 +29,20 @@
     {% block main %}
     <style>.main{
         text-align: center;
+        font-size: 24px;
     }</style>
     {% if user == admin %}
     <div class="center">Я не придумал что тут</div>
-    <div class="center" style="margin: 10px;">Вот ссылка на тесты: <a href="/tests" style="background-color: aquamarine; ">БЕДНИ</a></div>
-    <div class="center"><button class="stat" style="background-color:chartreuse; ">СТАТИСТИКА</button></div>
-    <div class="center" style="margin: 10px;"><a href="/create-word" style="background-color: rgb(94, 82, 255); ">СОЗДАТЬ СЛОВО</a></div>
-    <div class="center" style="margin: 10px;"><a href="/create-test" style="background-color: rgb(255, 82, 218); ">СОЗДАТЬ ТЕСТ</a></div>
-    <div class="center" style="margin: 10px;"><a href="/delete-word" style="background-color: rgb(82, 163, 255); ">УДАЛИТЬ СЛОВО</a></div>
-    <div class="center" style="margin: 10px;"><a href="/delete-test" style="background-color: rgb(82, 252, 255); ">УДАЛИТЬ TECT</a></div>
+    <div class="center" style="margin: 20px;">Вот ссылка на тесты: </div>
+    <div class="center" style="margin: 20px;"><a href="/tests" style="background-color: aquamarine;">БЕДНИ</a></div>
+    <div class="center" style="margin: 20px;"><button class="stat" style="background-color:chartreuse; ">СТАТИСТИКА</button></div>
+    <div class="center" style="margin: 20px;"><a href="/create-word" style="background-color: rgb(94, 82, 255); ">СОЗДАТЬ СЛОВО</a></div>
+    <div class="center" style="margin: 20px;"><a href="/create-test" style="background-color: rgb(255, 82, 218); ">СОЗДАТЬ ТЕСТ</a></div>
+    <div class="center" style="margin: 20px;"><a href="/delete-word" style="background-color: rgb(82, 163, 255); ">УДАЛИТЬ СЛОВО</a></div>
+    <div class="center" style="margin: 20px;"><a href="/delete-test" style="background-color: rgb(82, 252, 255); ">УДАЛИТЬ TECT</a></div>
     {% else %}
     <div class="center">Я не придумал что тут</div>
-    <div class="center" style="margin: 10px;">Вот ссылка на тесты: <a href="/tests" style="background-color: aquamarine; ">БЕДНИ</a></div>
+    <div class="center" style="margin: 15px;">Вот ссылка на тесты: <a href="/tests" style="background-color: aquamarine; ">БЕДНИ</a></div>
     {% endif %}
     {% endblock %}
     </div>
