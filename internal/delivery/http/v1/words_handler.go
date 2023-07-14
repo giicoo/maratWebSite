@@ -59,7 +59,7 @@ func (h *Handler) deleteWordPage(w http.ResponseWriter, r *http.Request, ps http
 	logrus.Info(r.URL)
 
 	// get words
-	words, err := h.services.WordsServices.GetWord()
+	words, err := h.services.WordsServices.GetWords()
 	if err != nil {
 		logrus.Error(err)
 		http.Error(w, "Service Error", http.StatusInternalServerError)
@@ -78,7 +78,7 @@ func (h *Handler) getWords(w http.ResponseWriter, r *http.Request, ps httprouter
 	logrus.Info(r.URL)
 
 	// get words
-	words, err := h.services.WordsServices.GetWord()
+	words, err := h.services.WordsServices.GetWords()
 	if err != nil {
 		logrus.Error(err)
 		http.Error(w, "Service Error", http.StatusInternalServerError)

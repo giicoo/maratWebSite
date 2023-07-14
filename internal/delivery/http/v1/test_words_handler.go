@@ -169,7 +169,7 @@ func (h *Handler) resPage(w http.ResponseWriter, r *http.Request, ps httprouter.
 func (h *Handler) createTestPage(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	logrus.Info(r.URL)
 
-	words, err := h.services.WordsServices.GetWord()
+	words, err := h.services.WordsServices.GetWords()
 	if err != nil {
 		logrus.Error(err)
 		http.Error(w, "Service error", http.StatusInternalServerError)

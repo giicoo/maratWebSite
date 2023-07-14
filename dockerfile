@@ -1,4 +1,4 @@
-FROM golang:1.20
+FROM golang:1.20 
 
 WORKDIR /usr/src/app
 
@@ -13,7 +13,3 @@ EXPOSE 8080
 EXPOSE 27017
 
 CMD ["app"]
-
-# FROM mongo
-
-# EXPOSE 27017

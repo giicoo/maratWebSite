@@ -11,7 +11,7 @@ import (
 type WordsFuncs interface {
 	AddWord(w models.Word) error
 	DeleteWord(w []models.Word) error
-	GetWord() ([]*models.Word, error)
+	GetWords() ([]*models.Word, error)
 	GetWordsByNames(words []*models.Word) ([]*models.Word, error)
 }
 
@@ -38,7 +38,7 @@ func (s *WordsService) DeleteWord(w []models.Word) error {
 	return nil
 }
 
-func (s *WordsService) GetWord() ([]*models.Word, error) {
+func (s *WordsService) GetWords() ([]*models.Word, error) {
 	// get words
 	return s.repo.GetWords()
 }

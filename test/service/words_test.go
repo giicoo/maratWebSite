@@ -64,7 +64,7 @@ func TestGetWords(t *testing.T) {
 			services := service.NewServices(repo, hash, cfg)
 
 			// check services
-			words, err := services.WordsServices.GetWord()
+			words, err := services.WordsServices.GetWords()
 
 			assert.Equal(t, test.expectedError, err)
 			assert.Equal(t, test.expectedAnswer, words)
