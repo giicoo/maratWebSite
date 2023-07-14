@@ -72,6 +72,7 @@ func (h *Handler) singIn(w http.ResponseWriter, r *http.Request, ps httprouter.P
 	}
 
 	http.SetCookie(w, &ck)
+	logrus.Info("Cookie ok")
 	w.Write([]byte("Successful login"))
 }
 

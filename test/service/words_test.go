@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/giicoo/maratWebSite/configs"
 	mock_repository "github.com/giicoo/maratWebSite/internal/repository/mocks"
 	"github.com/giicoo/maratWebSite/internal/service"
 	"github.com/giicoo/maratWebSite/models"
@@ -58,8 +59,9 @@ func TestGetWords(t *testing.T) {
 			test.mockBehavior(repo)
 
 			hash := hashFunc.NewHashTools()
+			cfg := &configs.Config{ADMIN_LOGIN: "admin", TIME_COOKIE: 3600}
 			// init services
-			services := service.NewServices(repo, hash)
+			services := service.NewServices(repo, hash, cfg)
 
 			// check services
 			words, err := services.WordsServices.GetWord()
@@ -107,11 +109,60 @@ func TestAddWord(t *testing.T) {
 			test.mockBehavior(repo, test.inputWord)
 
 			hash := hashFunc.NewHashTools()
+			cfg := &configs.Config{ADMIN_LOGIN: "admin", TIME_COOKIE: 3600}
 			// init services
-			services := service.NewServices(repo, hash)
+			services := service.NewServices(repo, hash, cfg)
 
 			// check service
 			err := services.WordsServices.AddWord(test.inputWord)
+
+			assert.Equal(t, test.expectedError, err)
+		})
+	}
+}
+func TestDeleteWord(t *testing.T) {
+	type mockBehavior func(r *mock_repository.MockRepo, word models.Word)
+
+	tests := []struct {
+		name          string
+		inputWord     []models.Word
+		mockBehavior  mockBehavior
+		expectedError error
+	}{
+		{
+			name:      "OK",
+			inputWord: []models.Word{{Word: "test", Translate: "test_t", Datatime: time.Now().Format(time.ANSIC)}},
+			mockBehavior: func(r *mock_repository.MockRepo, word models.Word) {
+				r.EXPECT().DeleteWord(word).Return(nil)
+			},
+			expectedError: nil,
+		},
+		{
+			name:      "Service Error",
+			inputWord: []models.Word{{Word: "test", Translate: "test_t", Datatime: time.Now().Format(time.ANSIC)}},
+			mockBehavior: func(r *mock_repository.MockRepo, word models.Word) {
+				r.EXPECT().DeleteWord(word).Return(errors.New("Test Error"))
+			},
+			expectedError: errors.New("Test Error"),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			c := gomock.NewController(t)
+			defer c.Finish()
+
+			// init mock repo
+			repo := mock_repository.NewMockRepo(c)
+			test.mockBehavior(repo, test.inputWord[0])
+
+			hash := hashFunc.NewHashTools()
+			cfg := &configs.Config{ADMIN_LOGIN: "admin", TIME_COOKIE: 3600}
+			// init services
+			services := service.NewServices(repo, hash, cfg)
+
+			// check service
+			err := services.WordsServices.DeleteWord(test.inputWord)
 
 			assert.Equal(t, test.expectedError, err)
 		})

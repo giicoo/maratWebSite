@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/giicoo/maratWebSite/configs"
 	mock_repository "github.com/giicoo/maratWebSite/internal/repository/mocks"
 	"github.com/giicoo/maratWebSite/internal/service"
 	"github.com/giicoo/maratWebSite/models"
@@ -31,6 +32,7 @@ func TestSingUp(t *testing.T) {
 			inputUser:   models.User{Login: "test", Password: "test_p", Datatime: time.Now().Format(time.ANSIC)},
 			inputUserDB: models.User{Login: "test", Password: "hash", Datatime: time.Now().Format(time.ANSIC)},
 			mockBehavior: func(r *mock_repository.MockRepo, user models.User) {
+				r.EXPECT().GetUserByLogin(user.Login).Return(models.User{}, nil)
 				r.EXPECT().AddUser(user).Return(nil)
 			},
 			mockBehaviorHash: func(r *mock_hashFunc.MockHashTools, password string) {
@@ -40,10 +42,24 @@ func TestSingUp(t *testing.T) {
 			expectedUser:  models.User{Login: "test", Password: "hash", Datatime: time.Now().Format(time.ANSIC)},
 		},
 		{
+			name:        "User exist",
+			inputUser:   models.User{Login: "test", Password: "test_p", Datatime: time.Now().Format(time.ANSIC)},
+			inputUserDB: models.User{Login: "test", Password: "hash", Datatime: time.Now().Format(time.ANSIC)},
+			mockBehavior: func(r *mock_repository.MockRepo, user models.User) {
+				r.EXPECT().GetUserByLogin(user.Login).Return(models.User{Login: "test", Password: "hash", Datatime: time.Now().Format(time.ANSIC)}, nil)
+			},
+			mockBehaviorHash: func(r *mock_hashFunc.MockHashTools, password string) {
+				r.EXPECT().HashPassword(password).Return("hash", nil)
+			},
+			expectedError: errors.New("User already exist"),
+			expectedUser:  models.User{},
+		},
+		{
 			name:        "DB Error",
 			inputUser:   models.User{Login: "test", Password: "test_p", Datatime: time.Now().Format(time.ANSIC)},
 			inputUserDB: models.User{Login: "test", Password: "hash", Datatime: time.Now().Format(time.ANSIC)},
 			mockBehavior: func(r *mock_repository.MockRepo, user models.User) {
+				r.EXPECT().GetUserByLogin(user.Login).Return(models.User{}, nil)
 				r.EXPECT().AddUser(user).Return(errors.New("DB Error"))
 			},
 			mockBehaviorHash: func(r *mock_hashFunc.MockHashTools, password string) {
@@ -65,8 +81,10 @@ func TestSingUp(t *testing.T) {
 			hash := mock_hashFunc.NewMockHashTools(c)
 			test.mockBehaviorHash(hash, test.inputUser.Password)
 
+			cfg := &configs.Config{ADMIN_LOGIN: "admin", TIME_COOKIE: 3600}
+
 			// init services
-			services := service.NewServices(repo, hash)
+			services := service.NewServices(repo, hash, cfg)
 
 			user, err := services.AuthServices.SingUp(test.inputUser)
 
@@ -135,7 +153,9 @@ func TestSingIn(t *testing.T) {
 			hash := mock_hashFunc.NewMockHashTools(c)
 			test.mockBehaviorHash(hash, test.inputUser.Password, test.inputUserDB.Password)
 
-			services := service.NewServices(repo, hash)
+			cfg := &configs.Config{ADMIN_LOGIN: "admin", TIME_COOKIE: 3600}
+
+			services := service.NewServices(repo, hash, cfg)
 			_, err := services.AuthServices.SingIn(test.inputUser)
 
 			assert.Equal(t, test.expectedError, err)

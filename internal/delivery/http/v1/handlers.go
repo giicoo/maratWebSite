@@ -65,7 +65,8 @@ func (h *Handler) index(w http.ResponseWriter, r *http.Request, ps httprouter.Pa
 	logrus.Info(r.URL)
 
 	// create template
-	tpl := gonja.Must(gonja.FromFile("/templates/index.html"))
+	// TODO добавить к пути полный путь у всех шаблонов
+	tpl := gonja.Must(gonja.FromFile("templates/index.html"))
 
 	out, err := tpl.Execute(gonja.Context{"user": r.URL.User.Username(), "admin": h.cfg.ADMIN_LOGIN})
 	if err != nil {

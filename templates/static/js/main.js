@@ -27,7 +27,6 @@ $(document).ready(function(){
         
         var data = []
         for (const element of dataForm) {
-            console.log(element)
             var el = new Map()
             el.set("word", element.name)
             el.set("translate", element.value)

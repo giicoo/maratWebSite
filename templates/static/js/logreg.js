@@ -8,7 +8,6 @@ $(document).ready(function(){
                 data: formData,
                 success: function(dt){
                     window.location.replace('/')
-                    console.log(dt)
                 },
                 error: function (err){
                     console.log(err)
@@ -28,7 +27,6 @@ $(document).ready(function(){
                 data: formData,
                 success: function(dt){
                     window.location.replace('/sing')
-                    console.log(dt)
                 },
                 error: function (err){
                     $('.error').css('display', 'block')

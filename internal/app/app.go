@@ -10,6 +10,7 @@ import (
 	"github.com/giicoo/maratWebSite/internal/service"
 	hashFunc "github.com/giicoo/maratWebSite/pkg/hash_password"
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/sirupsen/logrus"
 )
 
 func Run() error {
@@ -31,12 +32,14 @@ func Run() error {
 	r := handler.InitHandlers()
 
 	// init db
+	logrus.Info("Init DB...")
 	if err := repo.InitDB(); err != nil {
 		return err
 	}
 
 	// init and start server
-	srv := server.NewServer(fmt.Sprintf("%v:%v", cfg.HOST, cfg.PORT), r)
+	logrus.Info("Start Server...")
+	srv := server.NewServer(fmt.Sprintf(":%v", cfg.PORT), r)
 
 	if err := srv.Start(); err != nil {
 		return err

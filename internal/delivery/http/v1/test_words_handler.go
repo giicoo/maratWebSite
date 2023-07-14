@@ -20,7 +20,7 @@ func (h *Handler) testsPage(w http.ResponseWriter, r *http.Request, ps httproute
 		return
 	}
 	// create template
-	tpl := gonja.Must(gonja.FromFile("/templates/listtest.html"))
+	tpl := gonja.Must(gonja.FromFile("templates/listtest.html"))
 	out, err := tpl.Execute(gonja.Context{"tests": tests, "user": r.URL.User})
 	if err != nil {
 		logrus.Error(err)
@@ -42,7 +42,7 @@ func (h *Handler) testPageByName(w http.ResponseWriter, r *http.Request, ps http
 	}
 
 	// create template
-	tpl := gonja.Must(gonja.FromFile("/templates/test.html"))
+	tpl := gonja.Must(gonja.FromFile("templates/test.html"))
 
 	out, err := tpl.Execute(gonja.Context{"words": words, "first": words[0], "last": words[len(words)-1], "test_name": ps.ByName("name"), "user": r.URL.User})
 	if err != nil {
@@ -156,7 +156,7 @@ func (h *Handler) resPage(w http.ResponseWriter, r *http.Request, ps httprouter.
 	}
 
 	// create template
-	tpl := gonja.Must(gonja.FromFile("/templates/res.html"))
+	tpl := gonja.Must(gonja.FromFile("templates/res.html"))
 
 	out, err := tpl.Execute(gonja.Context{"answers": answers, "test_name": ps.ByName("test_name"), "user": r.URL.User})
 	if err != nil {
@@ -177,7 +177,7 @@ func (h *Handler) createTestPage(w http.ResponseWriter, r *http.Request, ps http
 	}
 
 	// create template
-	tpl := gonja.Must(gonja.FromFile("/templates/createtest.html"))
+	tpl := gonja.Must(gonja.FromFile("templates/createtest.html"))
 
 	out, err := tpl.Execute(gonja.Context{"words": words, "user": r.URL.User})
 	if err != nil {
@@ -197,7 +197,7 @@ func (h *Handler) deleteTestPage(w http.ResponseWriter, r *http.Request, ps http
 		http.Error(w, "Service Error", http.StatusInternalServerError)
 	}
 	// create template
-	tpl := gonja.Must(gonja.FromFile("/templates/deletetest.html"))
+	tpl := gonja.Must(gonja.FromFile("templates/deletetest.html"))
 
 	out, err := tpl.Execute(gonja.Context{"user": r.URL.User, "tests": tests})
 	if err != nil {
@@ -213,7 +213,7 @@ func (h *Handler) deleteTest(w http.ResponseWriter, r *http.Request, ps httprout
 	body := r.Body
 	defer body.Close()
 
-	tests := []*models.Test{}
+	tests := []models.Test{}
 	if err := json.NewDecoder(body).Decode(&tests); err != nil {
 		logrus.Error(err)
 		http.Error(w, "Invalid JSON", http.StatusBadRequest)

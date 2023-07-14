@@ -5,7 +5,6 @@ $(document).ready(function(){
         data["name"] = dataForm[0]["value"]
         data["words"] = []
         dataForm = dataForm.slice(1)
-        console.log(dataForm)
         words = []
         for (const element of dataForm) {
             el = new Map
@@ -27,7 +26,7 @@ $(document).ready(function(){
                             method: "post",
                             data: formData,
                             success: function(dt){
-                                console.log(dt)
+                                document.location.reload()
                             },
                             error: function (err){
                                 console.log(err)

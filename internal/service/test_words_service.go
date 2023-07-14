@@ -16,7 +16,7 @@ type TestFuncs interface {
 	GetTestByName(name string) (models.Test, error)
 	GetTests() ([]*models.Test, error)
 	AddTest(test models.Test) error
-	DeleteTest(t []*models.Test) error
+	DeleteTest(t []models.Test) error
 	GetWordsForTest(name string) ([]*models.ElemTest, error)
 	CheckTest(words []*models.Word, test_name, username string) ([]*models.CheckTestWord, error)
 }
@@ -110,9 +110,9 @@ func (s *TestService) AddTest(test models.Test) error {
 	return s.repo.AddTest(test)
 }
 
-func (s *TestService) DeleteTest(t []*models.Test) error {
+func (s *TestService) DeleteTest(t []models.Test) error {
 	for _, test := range t {
-		err := s.repo.DeleteTest(*test)
+		err := s.repo.DeleteTest(test)
 		if err != nil {
 			return err
 		}

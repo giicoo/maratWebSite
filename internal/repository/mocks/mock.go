@@ -90,6 +90,34 @@ func (mr *MockRepoMockRecorder) AddWord(word interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddWord", reflect.TypeOf((*MockRepo)(nil).AddWord), word)
 }
 
+// DeleteTest mocks base method.
+func (m *MockRepo) DeleteTest(w models.Test) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteTest", w)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteTest indicates an expected call of DeleteTest.
+func (mr *MockRepoMockRecorder) DeleteTest(w interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteTest", reflect.TypeOf((*MockRepo)(nil).DeleteTest), w)
+}
+
+// DeleteWord mocks base method.
+func (m *MockRepo) DeleteWord(w models.Word) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteWord", w)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteWord indicates an expected call of DeleteWord.
+func (mr *MockRepoMockRecorder) DeleteWord(w interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteWord", reflect.TypeOf((*MockRepo)(nil).DeleteWord), w)
+}
+
 // GetTestByName mocks base method.
 func (m *MockRepo) GetTestByName(name string) (models.Test, error) {
 	m.ctrl.T.Helper()

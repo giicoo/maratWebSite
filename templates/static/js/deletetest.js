@@ -8,14 +8,13 @@ $(document).ready(function(){
             tests.push(el)
         }
         tests = JSON.stringify(tests)
-        console.log(tests)
         $.ajax(
             {
                 url:"/delete-test", 
                 method: "delete",
                 data: tests,
                 success: function(dt){
-                    console.log(dt)
+                    document.location.reload()
                 },
                 error: function (err){
                     console.log(err)
